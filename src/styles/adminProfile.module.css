@@ -1,0 +1,184 @@
+.modalBox{
+    width: 85% !important;
+}
+
+.container{
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 85%;
+}
+
+.gridContainer{
+    margin: 1rem 1.5rem !important;
+}
+
+.firstBox{
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: center;
+    padding: 0rem !important;
+}
+
+.firstBoxImage{
+    font-size: 2.5rem !important;
+}
+
+.firstBoxHeader{
+    text-align: center;
+    font-weight: 600;
+    font-size: 2rem;
+    color: #404040;
+    margin-top: 0.4rem;
+}
+
+.firstBoxSubHeader{
+    text-align: center;
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: #404040;
+    margin-top: 0.2rem;
+}
+
+.firstBoxSwitch{
+    margin-top: 1rem;
+}
+
+.secondBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0rem !important;
+}
+
+.secondBoxContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0rem;
+    width: 75%;
+}
+
+.secondBoxHeader{
+    font-weight: 700;
+    font-size: 2rem;
+    color: #404040;
+    margin-top: 0rem;
+}
+
+.secondBoxButton{
+    margin-top: 1.2rem !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.8rem !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+    background-color: #1C4EFE !important;
+    padding: 1rem !important;
+    width: 100%;
+}
+
+@media (min-width: 545px) {
+    .modalBox{
+        width: 75% !important;
+    }    
+    .firstBoxHeader{
+        font-size: 2.5rem;
+    }    
+    .firstBoxSubHeader{
+        font-size: 1.5rem;
+    }
+    .secondBoxHeader{
+        font-size: 2.5rem;
+    }
+    .secondBoxButton{
+        font-size: 1rem !important;
+        padding: 1rem !important;
+    }
+}
+
+@media (min-width: 630px) {
+    .container{
+        padding-top: 6rem;
+    }    
+    .firstBoxHeader{
+        font-size: 2.5rem;
+    }    
+    .firstBoxSubHeader{
+        font-size: 1.5rem;
+    }
+    .secondBoxHeader{
+        font-size: 2.5rem;
+    }
+    .secondBoxButton{
+        margin-top: 1.5rem !important;
+        font-size: 1rem !important;
+        width: 80%;
+    }
+}
+
+@media (min-width: 800px) {
+    .modalBox{
+        width: 65% !important;
+    }    
+}
+
+@media (min-width: 900px) {
+    .container{
+        padding-top: 7rem;
+    }
+    .gridContainer{
+        margin: 2rem 2.5rem !important;
+    }
+    .firstBoxHeader{
+        font-size: 2.5rem;
+    }    
+    .firstBoxSubHeader{
+        font-size: 1.5rem;
+    }
+    .secondBox{
+        align-items: flex-start;
+    }
+    .secondBoxHeader{
+        font-size: 2.5rem;
+    }
+    .secondBoxButton{
+        font-size: 1rem !important;
+    }
+}
+
+@media (min-width: 1150px) {
+    .modalBox{
+        width: 50% !important;
+    }   
+    .container{
+        padding-top: 8rem;
+    }
+    .gridContainer{
+        margin: 2rem 2.5rem !important;
+    }
+    .firstBoxHeader{
+        font-size: 3rem;
+    }
+    .firstBoxSubHeader{
+        font-size: 1.5rem;
+    }
+    .secondBox{
+        align-items: flex-start;
+    }
+    .secondBoxHeader{
+        font-size: 3rem;
+    }
+    .secondBoxButton{
+        font-size: 1rem !important;
+        width: 80%;
+    }
+}

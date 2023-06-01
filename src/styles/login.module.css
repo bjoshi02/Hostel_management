@@ -1,0 +1,180 @@
+.container{
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 85%;
+}
+
+.gridContainer{
+    margin: 1rem 1.5rem !important;
+}
+
+.firstBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0rem !important;
+}
+
+.firstBoxPaper{
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.firstBoxImage{
+    width: 50%;
+    height: auto;
+}
+
+.firstBoxHeader{
+    text-align: center;
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: #404040;
+    margin-top: 0.4rem;
+}
+
+.firstBoxSubHeader{
+    text-align: center;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #404040;
+    margin-top: 0.2rem;
+}
+
+.secondBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0rem !important;
+}
+
+.secondBoxContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0rem;
+    width: 75%;
+}
+
+.secondBoxHeader{
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: #404040;
+    margin-top: 0rem;
+}
+
+.secondBoxButton{
+    margin-top: 1.5rem !important;
+    border-radius: 0.5rem !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+    background-color: #1C4EFE !important;
+    width: 100%;
+}
+
+@media (min-width: 545px) {
+    .firstBoxImage{
+        width: 40%;
+        height: auto;
+    }
+    .firstBoxHeader{
+        font-size: 1.5rem;
+    }
+    
+    .firstBoxSubHeader{
+        font-size: 1.2rem;
+    }
+    .secondBoxHeader{
+        font-size: 3rem;
+    }
+}
+
+@media (min-width: 630px) {
+    .container{
+        padding-top: 6rem;
+    }    
+    .firstBoxImage{
+        width: 30%;
+        height: auto;
+    }
+    .firstBoxHeader{
+        font-size: 1.8rem;
+    }
+    
+    .firstBoxSubHeader{
+        font-size: 1.5rem;
+    }
+    .secondBoxHeader{
+        font-size: 3rem;
+    }
+    .secondBoxButton{
+        width: 80%;
+    }
+}
+
+@media (min-width: 900px) {
+    .container{
+        padding-top: 7rem;
+    }
+    .gridContainer{
+        margin: 2rem 2.5rem !important;
+    }
+    .firstBoxImage{
+        width: 35%;
+        height: auto;
+    }
+    .firstBoxHeader{
+        font-size: 1.7rem;
+    }
+    
+    .firstBoxSubHeader{
+        font-size: 1.4rem;
+    }
+    .secondBox{
+        align-items: flex-start;
+    }
+    .secondBoxHeader{
+        font-size: 3rem;
+    }
+}
+
+@media (min-width: 1150px) {
+    .container{
+        padding-top: 8rem;
+    }
+    .gridContainer{
+        margin: 2rem 2.5rem !important;
+    }
+    .firstBoxImage{
+        width: 30%;
+        height: auto;
+    }
+    .firstBoxHeader{
+        font-size: 2rem;
+    }
+    .firstBoxSubHeader{
+        font-size: 1.8rem;
+    }
+    .secondBox{
+        align-items: flex-start;
+    }
+    .secondBoxHeader{
+        font-size: 3.5rem;
+    }
+    .secondBoxButton{
+        width: 80%;
+    }
+}
+

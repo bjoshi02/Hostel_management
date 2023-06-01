@@ -1,0 +1,83 @@
+.container{
+    margin: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header{
+    width: 100%;
+    text-align: left;
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.upload{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonWrapper{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.proceedButton{
+    margin-top: 1.5rem !important;
+    border-radius: 0.5rem !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+    background-color: #1C4EFE !important;
+    width: 30%;
+}
+
+@media (min-width: 545px) {
+    .container{
+        margin: 1.5rem;
+    }
+    .header{
+        font-size: 1.6rem;
+    }    
+}
+
+@media (min-width: 630px) {
+    .container{
+        margin: 1.8rem;
+    }
+    .header{
+        font-size: 1.8rem;
+    } 
+    .proceedButton{
+        font-size: 1rem !important;
+    }   
+}
+
+@media (min-width: 900px) {
+    .container{
+        margin: 2rem;
+    }
+    .header{
+        font-size: 2rem;
+    }    
+    .proceedButton{
+        font-size: 1rem !important;
+        width: 25%;
+    }
+}
+
+@media (min-width: 1150px) {
+    .container{
+        margin: 2.2rem;
+    }
+    .header{
+        font-size: 2.2rem;
+    }    
+    .proceedButton{
+        font-size: 1rem !important;
+        width: 20%;
+    }
+}
