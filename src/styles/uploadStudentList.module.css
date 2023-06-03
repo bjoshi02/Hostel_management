@@ -8,9 +8,22 @@
 
 .header{
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.headerText{
     text-align: left;
     font-weight: 700;
     font-size: 1.3rem;
+}
+
+.headerIcon{
+    cursor: pointer;
+    width: 1.3rem !important;
+    height: 1.3rem !important;
 }
 
 .upload{
@@ -18,6 +31,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 1rem;
 }
 
 .buttonWrapper{
@@ -39,17 +53,25 @@
     .container{
         margin: 1.5rem;
     }
-    .header{
+    .headerText{
         font-size: 1.6rem;
     }    
+    .headerIcon{
+        width: 1.6rem !important;
+        height: 1.6rem !important;
+    } 
 }
 
 @media (min-width: 630px) {
     .container{
         margin: 1.8rem;
     }
-    .header{
+    .headerText{
         font-size: 1.8rem;
+    }    
+    .headerIcon{
+        width: 1.8rem !important;
+        height: 1.8rem !important;
     } 
     .proceedButton{
         font-size: 1rem !important;
@@ -60,8 +82,12 @@
     .container{
         margin: 2rem;
     }
-    .header{
+    .headerText{
         font-size: 2rem;
+    }    
+    .headerIcon{
+        width: 2rem !important;
+        height: 2rem !important;
     }    
     .proceedButton{
         font-size: 1rem !important;
@@ -73,8 +99,12 @@
     .container{
         margin: 2.2rem;
     }
-    .header{
+    .headerText{
         font-size: 2.2rem;
+    }    
+    .headerIcon{
+        width: 2.2rem !important;
+        height: 2.2rem !important;
     }    
     .proceedButton{
         font-size: 1rem !important;

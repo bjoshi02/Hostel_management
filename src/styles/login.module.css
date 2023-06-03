@@ -1,5 +1,5 @@
 .container{
-    padding-top: 5rem;
+    padding-top: 6rem;
     padding-bottom: 2rem;
     display: flex;
     justify-content: center;
@@ -85,6 +85,9 @@
 }
 
 @media (min-width: 545px) {
+    .container{
+        padding-top: 9rem;
+    }
     .firstBoxImage{
         width: 40%;
         height: auto;
@@ -103,7 +106,7 @@
 
 @media (min-width: 630px) {
     .container{
-        padding-top: 6rem;
+        padding-top: 10rem;
     }    
     .firstBoxImage{
         width: 30%;
@@ -126,7 +129,7 @@
 
 @media (min-width: 900px) {
     .container{
-        padding-top: 7rem;
+        padding-top: 10rem;
     }
     .gridContainer{
         margin: 2rem 2.5rem !important;
@@ -152,7 +155,7 @@
 
 @media (min-width: 1150px) {
     .container{
-        padding-top: 8rem;
+        padding-top: 10rem;
     }
     .gridContainer{
         margin: 2rem 2.5rem !important;

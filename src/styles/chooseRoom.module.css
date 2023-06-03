@@ -1,5 +1,5 @@
 .container{
-    padding-top: 5rem;
+    padding-top: 8rem;
     padding-bottom: 2rem;
     display: flex;
     justify-content: center;
@@ -59,6 +59,9 @@
 }
 
 @media (min-width: 545px) {
+    .container{
+        padding-top: 9rem;
+    }  
     .formDivFirst{
         font-size: 1.5rem;
     }
@@ -70,7 +73,7 @@
 
 @media (min-width: 630px) {
     .container{
-        padding-top: 6rem;
+        padding-top: 10rem;
     }  
     .formDiv{
         margin-top: 1.5rem;
@@ -86,7 +89,7 @@
 
 @media (min-width: 900px) {
     .container{
-        padding-top: 7rem;
+        padding-top: 10rem;
     }
     .formDivFirst{
         font-size: 2rem;
@@ -102,7 +105,7 @@
 
 @media (min-width: 1150px) { 
     .container{
-        padding-top: 8rem;
+        padding-top: 10rem;
     }
     .formDivFirst{
         font-size: 2rem;

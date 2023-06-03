@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 
 import UploadStudentList from './UploadStudentList';
 import UploadRoomList from './UploadRoomList';
+import CheckTransaction from './CheckTransaction';
 
 import styles from "../../styles/adminProfile.module.css";
 
@@ -165,6 +166,7 @@ const Profile = () => {
       >
         <Box sx={modalStyle} className={styles.modalBox}>
           <UploadRoomList handleGoBack={handleCloseModal2} />
+          {/* <CheckTransaction handleGoBack={handleCloseModal2} /> */}
         </Box>
       </Modal>
       {open && submitErrors.length !== 0 ? (

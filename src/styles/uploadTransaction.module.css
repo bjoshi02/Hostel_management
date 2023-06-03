@@ -1,9 +1,17 @@
 .container{
-    margin: 1.3rem;
+    padding-top: 8rem;
+    padding-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    padding: 0.8rem;
+    align-items: flex-end;
+    /* justify-content: flex-end; */
+    width: 85%;
 }
 
 .header{
@@ -20,46 +28,80 @@
     font-size: 1.3rem;
 }
 
-.headerIcon{
-    cursor: pointer;
-    width: 1.3rem !important;
-    height: 1.3rem !important;
+.bodyWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* justify-content: center; */
+    width: 80%;
+}
+
+.footer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1.5rem;;
+}
+
+.footerFirst{
+    font-weight: 700;
+}
+
+.footerSecond{
+    margin-top: 1rem !important;
+    width: 85%;
 }
 
 .upload{
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-top: 1rem;
+    justify-content: flex-start;
+    margin-top: 1.5rem;;
 }
 
 .buttonWrapper{
     width: 100%;
     display: flex;
+    align-items: center;
     justify-content: flex-end;
 }
 
-.proceedButton{
+.submitButton{
     margin-top: 1.5rem !important;
     border-radius: 0.5rem !important;
     text-transform: none !important;
     box-shadow: none !important;
     background-color: #1C4EFE !important;
-    width: 30%;
+    width: 100%;
 }
 
 @media (min-width: 545px) {
     .container{
         margin: 1.5rem;
     }
+    .wrapper{
+        padding: 1rem 1.2rem;
+    }
     .headerText{
         font-size: 1.6rem;
-    }    
+    }  
     .headerIcon{
         width: 1.6rem !important;
         height: 1.6rem !important;
-    }    
+    } 
+    .footerFirst{
+        font-size: 1.2rem;
+    }   
+    .footerSecond{
+       padding: 0.2rem;
+    } 
+    .submitButton{
+        font-size: 1rem !important;
+        width: 50%;
+    }
 }
 
 @media (min-width: 630px) {
@@ -68,30 +110,40 @@
     }
     .headerText{
         font-size: 1.8rem;
-    }    
+    } 
     .headerIcon{
         width: 1.8rem !important;
         height: 1.8rem !important;
-    }
-    .proceedButton{
-        font-size: 1rem !important;
+    }  
+    .footerFirst{
+        font-size: 1.5rem;
     }   
+    .footerSecond{
+        margin-top: 0.5rem;
+    } 
+    .submitButton{
+        font-size: 1rem !important;
+        width: 50%;
+    }
 }
 
 @media (min-width: 900px) {
     .container{
         margin: 2rem;
     }
+    .wrapper{
+        padding: 1.2rem 1.5rem;
+    }
     .headerText{
         font-size: 2rem;
-    }    
+    } 
     .headerIcon{
         width: 2rem !important;
         height: 2rem !important;
-    }    
-    .proceedButton{
-        font-size: 1rem !important;
-        width: 25%;
+    }     
+    .submitButton{
+        font-size: 1.2rem !important;
+        width: 30%;
     }
 }
 
@@ -101,13 +153,13 @@
     }
     .headerText{
         font-size: 2.2rem;
-    }    
+    } 
     .headerIcon{
         width: 2.2rem !important;
         height: 2.2rem !important;
-    }   
-    .proceedButton{
-        font-size: 1rem !important;
+    }     
+    .submitButton{
+        font-size: 1.2rem !important;
         width: 20%;
     }
 }
