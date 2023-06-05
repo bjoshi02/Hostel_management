@@ -15,7 +15,7 @@ import Avatar from '@mui/material/Avatar';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
-
+import { encrypt, decrypt } from '../../crypto/crypto';
 
 import styles from "../../styles/studentProfile.module.css";
 
@@ -25,7 +25,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const Profile = () => {
  
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
@@ -44,23 +44,38 @@ const Profile = () => {
     setOpen(false);
   };
 
-//   useEffect(function () {
-//     const encUser = localStorage.getItem("login_user");
-//     const user = decrypt((encUser ? encUser : ""));
-//     const token = localStorage.getItem(`${user}Token`);
-//     if (token && token.length) {
-//       handleClick();
-//       setError("Already Logged In. Please Logout First!!");
-//       setTimeout(() => {
-//         navigate("/");
-//       }, 500);
-//     }
-//     else {
-//       localStorage.removeItem(`${user}Token`);
-//       localStorage.removeItem("login_user");
-//       localStorage.removeItem("email");
-//     }
-//   }, []);
+  useEffect(function () {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
+    const token = localStorage.getItem(`${user}Token`);
+    if(user === "student"){
+      if (token && token.length) {    }
+      else {
+        setSubmitErrors([]);
+        setError("Invalid Token");
+        handleClick();
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 500);
+      }
+    }
+    else{
+      setSubmitErrors([]);
+      setError("Invalid User");
+      handleClick();
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      setTimeout(() => {
+        navigate(`/`);
+      }, 500);
+    }
+  }, []);
 
   const handleChooseRoom = () => {
 

@@ -1,18 +1,56 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
+import { encrypt, decrypt } from '../../crypto/crypto';
 
 import styles from "../../styles/chooseRoom.module.css";
 
 const ChooseRoom = () => {
+
+  const navigate = useNavigate();
+
   const [hostel, setHostel] = React.useState('');
   const [block, setBlock] = React.useState('');
   const [floor, setFloor] = React.useState('');
   const [room, setRoom] = React.useState('');
+
+  useEffect(function () {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
+    const token = localStorage.getItem(`${user}Token`);
+    if(user === "student"){
+      if (token && token.length) {     }
+      else {
+        setSubmitErrors([]);
+        setError("Invalid Token");
+        handleClick();
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 500);
+      }
+    }
+    else{
+      setSubmitErrors([]);
+      setError("Invalid User");
+      handleClick();
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      setTimeout(() => {
+        navigate(`/`);
+      }, 500);
+    }
+  }, []);
 
   const handleHostelChange = (event) => {
     setHostel(event.target.value);
@@ -26,6 +64,7 @@ const ChooseRoom = () => {
   const handleRoomChange = (event) => {
     setRoom(event.target.value);
   };
+
   const handleProceed = () => {
 
   };

@@ -15,6 +15,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { encrypt, decrypt } from '../../crypto/crypto';
 
 import styles from "../../styles/enterOtp.module.css";
 
@@ -24,7 +25,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const EnterOtp = () => {
  
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -47,27 +48,89 @@ const EnterOtp = () => {
     setOpen(false);
   };
 
-//   useEffect(function () {
-//     const encUser = localStorage.getItem("login_user");
-//     const user = decrypt((encUser ? encUser : ""));
-//     const token = localStorage.getItem(`${user}Token`);
-//     if (token && token.length) {
-//       handleClick();
-//       setError("Already Logged In. Please Logout First!!");
-//       setTimeout(() => {
-//         navigate("/");
-//       }, 500);
-//     }
-//     else {
-//       localStorage.removeItem(`${user}Token`);
-//       localStorage.removeItem("login_user");
-//       localStorage.removeItem("email");
-//     }
-//   }, []);
+  // student/otpVerify
+  useEffect(function () {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
+    const token = localStorage.getItem(`${user}Token`);
+    if(user === "student"){
+      if (token && token.length) {
+        handleClick();
+        setError("Already Logged In. Please Logout First!!");
+        setTimeout(() => {
+          navigate("/");
+        }, 500);
+      }
+      else {
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("otp");
+      }
+    }
+    else{
+      setSubmitErrors([]);
+      setError("Invalid User");
+      handleClick();
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      setTimeout(() => {
+        navigate(`/`);
+      }, 500);
+    }
+  }, []);
+
   const onSubmit = async (data) => {
-    // const encryptedData = encrypt("admin");
-    // localStorage.setItem("login_user", encryptedData);
-    // navigate('/login_admin');
+    
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encEmail = localStorage.getItem("email");
+    const email = decrypt(encEmail ? encEmail : "");
+
+    if ((!user) || (user !== "student")) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      navigate('/');
+    }
+
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/student/otpVerify`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          otp: data.otp
+        }),
+      }
+    );
+    let resData = await response.json();
+    if (response.status === 400) {
+      // //console.log(resData.error);
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      // //console.log(error)
+    }
+    else if (response.status === 200) {
+      setError("");
+      setSubmitErrors([]);
+      setSuccess("OTP Verified, Successfully Logged In");
+      setTimeout(() => {
+        navigate("/student_profile");
+      }, 500);
+    } 
+    else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+
   };
 
   return (

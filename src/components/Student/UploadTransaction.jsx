@@ -3,12 +3,49 @@ import { Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
+import { useNavigate } from 'react-router-dom';
+import { encrypt, decrypt } from '../../crypto/crypto';
 
 import styles from "../../styles/uploadTransaction.module.css"; 
 
 const UploadTransaction = ({ handleGoBack }) => {
   
+  const navigate = useNavigate();
+  
   const [value, setValue] = useState("0000 0000 0000 0000");
+
+  useEffect(function () {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
+    const token = localStorage.getItem(`${user}Token`);
+    if(user === "student"){
+      if (token && token.length) {     }
+      else {
+        setSubmitErrors([]);
+        setError("Invalid Token");
+        handleClick();
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 500);
+      }
+    }
+    else{
+      setSubmitErrors([]);
+      setError("Invalid User");
+      handleClick();
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      setTimeout(() => {
+        navigate(`/`);
+      }, 500);
+    }
+  }, []);
 
   const handleSubmit = () => {
       console.log(value);

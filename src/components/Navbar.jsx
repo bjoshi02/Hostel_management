@@ -15,7 +15,7 @@ import ListItemText from '@mui/material/ListItemText';
 
 import styles from "../styles/navbar.module.css";
 
-const SideDrawer = ({ isOpen, setIsOpen }) => {
+const SideDrawer = ({ isOpen, setIsOpen, handleProfileClick, handleLogout }) => {
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -33,7 +33,7 @@ const SideDrawer = ({ isOpen, setIsOpen }) => {
     >
       <List>
           <ListItem key="Profile" disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={handleProfileClick}>
               <ListItemIcon>
                 <AccountCircleIcon style={{fontSize: '3rem', color: 'black'}} />
               </ListItemIcon>
@@ -41,7 +41,7 @@ const SideDrawer = ({ isOpen, setIsOpen }) => {
             </ListItemButton>
           </ListItem>
           <ListItem key="Logout" disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={handleLogout}>
               <ListItemIcon>
                 <LogoutIcon style={{fontSize: '3rem', color: 'black'}} />
               </ListItemIcon>
@@ -71,6 +71,84 @@ const Navbar = () => {
     setIsOpen(true);
   }
 
+  useEffect(function () {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
+    const token = localStorage.getItem(`${user}Token`);
+    if(user === "student" || user === "admin"){
+      if (token && token.length) {    }
+      else {
+        setSubmitErrors([]);
+        setError("Invalid Token");
+        handleClick();
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 500);
+      }
+    }
+    else{
+      setSubmitErrors([]);
+      setError("Invalid User");
+      handleClick();
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      setTimeout(() => {
+        navigate(`/`);
+      }, 500);
+    }
+  }, []);
+
+  const handleProfileClick = () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
+    const token = localStorage.getItem(`${user}Token`);
+    if(user === "student" || user === "admin"){
+      if (token && token.length) {  
+        navigate(`/${user}_profile`)
+      }
+      else {
+        setSubmitErrors([]);
+        setError("Invalid Token");
+        handleClick();
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 500);
+      }
+    }
+    else{
+      setSubmitErrors([]);
+      setError("Invalid User");
+      handleClick();
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      setTimeout(() => {
+        navigate(`/`);
+      }, 500);
+    }
+  }
+
+  const handleLogout = () => {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      setTimeout(() => {
+        navigate(`/`);
+      }, 100);
+  }
+
   return (
     <div className={styles.container}>
       <Paper elevation={3} className={styles.wrapper}>
@@ -82,11 +160,11 @@ const Navbar = () => {
           </div>
         </div>
         <div className={styles.linkWrapper}>
-          <div className={styles.linkDiv}>
+          <div className={styles.linkDiv} onClick={handleProfileClick}>
             <AccountCircleIcon className={styles.linkIcon} />
             <div className={styles.linkText}>Profile</div>
           </div>
-          <div className={styles.linkDiv}>
+          <div className={styles.linkDiv} onClick={handleLogout}>
             <LogoutIcon className={styles.linkIcon} />
             <div className={styles.linkText}>Logout</div>
           </div>
@@ -96,7 +174,7 @@ const Navbar = () => {
           <img src={hamburger} alt='hamburger-icon' className={styles.hamburgerIcon} />
         </div>
       </Paper>
-      <SideDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
+      <SideDrawer isOpen={isOpen} setIsOpen={setIsOpen} handleProfileClick={handleProfileClick} handleLogout={handleLogout} />
     </div>
   )
 }

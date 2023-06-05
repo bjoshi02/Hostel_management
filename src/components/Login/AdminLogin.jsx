@@ -16,6 +16,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { encrypt, decrypt } from '../../crypto/crypto';
 
 import styles from "../../styles/adminLogin.module.css";
 
@@ -25,7 +26,8 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const AdminLogIn = () => {
  
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -60,27 +62,75 @@ const AdminLogIn = () => {
     event.preventDefault();
   };
 
-//   useEffect(function () {
-//     const encUser = localStorage.getItem("login_user");
-//     const user = decrypt((encUser ? encUser : ""));
-//     const token = localStorage.getItem(`${user}Token`);
-//     if (token && token.length) {
-//       handleClick();
-//       setError("Already Logged In. Please Logout First!!");
-//       setTimeout(() => {
-//         navigate("/");
-//       }, 500);
-//     }
-//     else {
-//       localStorage.removeItem(`${user}Token`);
-//       localStorage.removeItem("login_user");
-//       localStorage.removeItem("email");
-//     }
-//   }, []);
-  const onSubmit = async (data) => {
-    // const encryptedData = encrypt("admin");
-    // localStorage.setItem("login_user", encryptedData);
-    // navigate('/login_admin');
+  useEffect(function () {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
+    const token = localStorage.getItem(`${user}Token`);
+    if (token && token.length) {
+      handleClick();
+      setError("Already Logged In. Please Logout First!!");
+      setTimeout(() => {
+        navigate(`/${user}_profile`);
+      }, 500);
+    }
+    else {
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");    
+    }
+  }, []);
+  
+  const onSubmit = async (data) => {    
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    if ((!user) || (user !== "admin")) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      navigate('/');
+    }
+    // //console.log(`${process.env.REACT_APP_website_link}/${user}/sendEmail`);        
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/adminlogin`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password
+        }),
+      }
+    );
+    let resData = await response.json();
+    if (response.status === 400) {
+      // //console.log(resData.error);
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      // //console.log(error)
+    }
+//  ADMIN_EMAIL = adminhostel@mnit.ac.in
+//  ADMIN_PASSWORD = adxtesasfqrt
+    else if (response.status === 200) {
+      setError("");
+      setSubmitErrors([]);
+      setSuccess("Successfully logged in");
+      localStorage.setItem(`adminToken`, resData[`adminToken`]);
+      localStorage.setItem("email", encrypt(data.email));
+      setTimeout(() => {
+        navigate("/admin_profile");
+      }, 500);
+    } 
+    else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+
   };
 
   return (

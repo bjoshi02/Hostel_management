@@ -1,0 +1,6 @@
+Local Storage Variables
+    -> user
+    -> ${user}Token
+    -> email
+    -> otp
+

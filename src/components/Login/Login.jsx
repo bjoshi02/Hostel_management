@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useNavigate } from 'react-router-dom';
+import { encrypt, decrypt } from '../../crypto/crypto';
 
 import styles from "../../styles/login.module.css";
 
@@ -16,7 +17,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const LogIn = () => {
  
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
@@ -34,36 +35,37 @@ const LogIn = () => {
     setOpen(false);
   };
 
-//   useEffect(function () {
-//     const encUser = localStorage.getItem("login_user");
-//     const user = decrypt((encUser ? encUser : ""));
-//     const token = localStorage.getItem(`${user}Token`);
-//     if (token && token.length) {
-//       handleClick();
-//       setError("Already Logged In. Please Logout First!!");
-//       setTimeout(() => {
-//         navigate("/");
-//       }, 500);
-//     }
-//     else {
-//       localStorage.removeItem(`${user}Token`);
-//       localStorage.removeItem("login_user");
-//       localStorage.removeItem("email");
-//     }
-//   }, []);
+  useEffect(function () {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
+    const token = localStorage.getItem(`${user}Token`);
+    if (token && token.length) {
+      handleClick();
+      setError("Already Logged In. Please Logout First!!");
+      setTimeout(() => {
+        navigate(`/${user}_profile`);
+      }, 500);
+    }
+    else {
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("user");
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+    }
+  }, []);
 
   const handleClickStudent = () => {
-    // const encryptedData = encrypt("student");
-    // //console.log(encryptedData);
-    // const decryptedData = decrypt(encryptedData);
-    // //console.log(decryptedData);
-    // localStorage.setItem("login_user", encryptedData);
-    // navigate('/login_student');
+    const encryptedData = encrypt("student");
+    //console.log(encryptedData);
+    const decryptedData = decrypt(encryptedData);
+    //console.log(decryptedData);
+    localStorage.setItem("user", encryptedData);
+    navigate('/student_login');
   };
   const handleClickAdmin = () => {
-    // const encryptedData = encrypt("admin");
-    // localStorage.setItem("login_user", encryptedData);
-    // navigate('/login_admin');
+    const encryptedData = encrypt("admin");
+    localStorage.setItem("user", encryptedData);
+    navigate('/admin_login');
   };
 
   return (
