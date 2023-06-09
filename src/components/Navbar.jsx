@@ -8,12 +8,20 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Drawer from "@mui/material/Drawer";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { useNavigate } from 'react-router-dom';
+import { encrypt, decrypt } from '../crypto/crypto';
 
 import styles from "../styles/navbar.module.css";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const SideDrawer = ({ isOpen, setIsOpen, handleProfileClick, handleLogout }) => {
 
@@ -65,6 +73,24 @@ const SideDrawer = ({ isOpen, setIsOpen, handleProfileClick, handleLogout }) => 
 }
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
+  const [submitErrors, setSubmitErrors] = useState([]);
+  const [success, setSuccess] = useState("");
+  const [allocated, setAllocated] = useState(true);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => {
@@ -140,6 +166,8 @@ const Navbar = () => {
   }
 
   const handleLogout = () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
       localStorage.removeItem("user");
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
@@ -175,6 +203,46 @@ const Navbar = () => {
         </div>
       </Paper>
       <SideDrawer isOpen={isOpen} setIsOpen={setIsOpen} handleProfileClick={handleProfileClick} handleLogout={handleLogout} />
+      {open && submitErrors.length !== 0 ? (
+        submitErrors.map(function (eachError) {
+          //console.log(eachError);
+          return (
+            <Snackbar
+              open={open}
+              autoHideDuration={5000}
+              onClose={handleClose}
+            >
+              <Alert
+                onClose={handleClose}
+                severity="error"
+                sx={{ width: "100%" }}
+              >
+                {eachError.msg}
+              </Alert>
+            </Snackbar>
+          );
+        })
+      ) : (error !== "" ? (
+        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {error}
+          </Alert>
+        </Snackbar>
+      ) : (
+        <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            {success}
+          </Alert>
+        </Snackbar>
+      ))}
     </div>
   )
 }

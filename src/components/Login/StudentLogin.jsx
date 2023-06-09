@@ -51,7 +51,8 @@ const StudentLogIn = () => {
   useEffect(function () {
     const encUser = localStorage.getItem("user");
     const user = decrypt((encUser ? encUser : ""));
-    const token = localStorage.getItem(`${user}Token`);
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
     if (token && token.length) {
       handleClick();
       setError("Already Logged In. Please Logout First!!");

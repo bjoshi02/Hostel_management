@@ -4,10 +4,8 @@ import Login from './pages/Login';
 import StudentLogin from './pages/StudentLogin';
 import AdminLogin from './pages/AdminLogin';
 import EnterOtp from './pages/EnterOtp';
-// import AdminProfile from "./components/Admin/Profile";
 import UploadStudentList from "./components/Admin/UploadStudentList";
-// import StudentProfile from "./components/Student/Profile";
-import ChooseRoom from "./components/Student/ChooseRoom";
+import ChooseRoom from "./pages/ChooseRoom";
 import Navbar from "./components/Navbar";
 import StudentProfile from './pages/StudentProfile';
 import AdminProfile from './pages/AdminProfile';
@@ -28,6 +26,7 @@ function App() {
           <Route path="/enter_otp" element={<EnterOtp />} />
           <Route path="/admin_profile" element={<AdminProfile />} />
           <Route path="/student_profile" element={<StudentProfile />} />
+          <Route path="/choose_room" element={<ChooseRoom />} />
           {/* <Route path="/societies">
             <Route index element={<Societies />} />
             <Route path=":societyid">

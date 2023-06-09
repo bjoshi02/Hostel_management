@@ -20,6 +20,7 @@ import { encrypt, decrypt } from '../../crypto/crypto';
 import UploadStudentList from './UploadStudentList';
 import UploadRoomList from './UploadRoomList';
 import CheckTransaction from './CheckTransaction';
+import axios from "axios";
 
 import styles from "../../styles/adminProfile.module.css";
 
@@ -38,6 +39,7 @@ const Profile = () => {
   const [checked, setChecked] = React.useState(true);
   const [openModal1, setOpenModal1] = React.useState(false);
   const [openModal2, setOpenModal2] = React.useState(false);
+  const [files, setFiles] = React.useState([]);
 
   const handleOpenModal1 = () => setOpenModal1(true);
   const handleCloseModal1 = () => setOpenModal1(false);
@@ -63,7 +65,9 @@ const Profile = () => {
   useEffect(function () {
     const encUser = localStorage.getItem("user");
     const user = decrypt((encUser ? encUser : ""));
-    const token = localStorage.getItem(`${user}Token`);
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
+
     if(user === "admin"){
       if (token && token.length) {      }
       else {
@@ -103,6 +107,162 @@ const Profile = () => {
     // const encryptedData = encrypt("admin");
     // localStorage.setItem("login_user", encryptedData);
     // navigate('/login_admin');
+  };
+
+  const handleStudentList = async () => {
+    // console.log(files);
+
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt((encToken ? encToken : ""));
+
+    let formData=new FormData();
+
+    for(let i=0;i<files.length;i++){
+        formData.append("attachments",files[i].file);
+    }
+    
+    if(user ===  "admin"){
+      formData.append(`adminToken`, token);
+    }
+    else{
+      setError("Invalid Token Please Login Again"); 
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    }
+
+
+    try{
+      await axios.post(`${process.env.REACT_APP_WEBSITE_LINK}/admin/uploadstudentlist`,formData,{ headers: {
+        'content-type': 'multipart/form-data'
+      }})
+
+      // console.log("Hello Found")
+        setSubmitErrors([]);
+        setError("");
+        setSuccess("Successfully Uploaded!");
+        setFiles([]);
+        setTimeout(() => {
+          // navigate(0);
+          setOpenModal1(false);
+        }, 1200);
+        handleClick();
+    }
+    catch(error){
+      const response = error.response;       
+      
+      if(response.status === 400){
+        if(response.data.error === "Access denied"){
+          setSubmitErrors([]);
+          setError("Access Denied Please Login Again");
+          handleClick(); 
+          localStorage.removeItem("user");
+          localStorage.removeItem(`${user}Token`);
+          localStorage.removeItem("email");
+          localStorage.removeItem("otp");
+          setTimeout(() => {
+              navigate("/admin_login");
+          }, 1200)
+        }
+        else{
+          setSubmitErrors([]);
+          setError(response.data.error);
+        }
+      }
+      else if(response.status === 403){
+          console.log("error 403");
+          setSubmitErrors(response.data.errors);
+      }
+      else{
+        setSubmitErrors([]);
+        setError("Cannot Upload, Try Again!");
+      }
+    }
+
+
+  };
+
+  const handleRoomList = async () => {
+    // console.log(files);
+
+    const encUser = localStorage.getItem("user");
+    const user = decrypt((encUser ? encUser : ""));
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token  = decrypt((encToken ? encToken : ""));
+
+    let formData=new FormData();
+
+    for(let i=0;i<files.length;i++){
+        formData.append("attachments",files[i].file);
+    }
+    
+    if(user ===  "admin"){
+      formData.append(`adminToken`, token);
+    }
+    else{
+      setError("Invalid Token Please Login Again"); 
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("login_user");
+      localStorage.removeItem("facultyToken");      
+      localStorage.removeItem("studentToken");      
+       setTimeout(() => {
+         navigate("/admin_login");
+       }, 2000);
+    }
+
+
+    try{
+      await axios.post(`${process.env.REACT_APP_WEBSITE_LINK}/admin/uploadroomlist`,formData,{ headers: {
+        'content-type': 'multipart/form-data'
+      }})
+
+      // console.log("Hello Found")
+        setSubmitErrors([]);
+        setError("");
+        setSuccess("Successfully Uploaded!");
+        setFiles([]);
+        setTimeout(() => {
+          // navigate(0);
+          setOpenModal2(false);
+        }, 1200);
+        handleClick();
+    }
+    catch(error){
+      const response = error.response;       
+      
+      if(response.status === 400){
+        if(response.data.error === "Access denied"){
+          setSubmitErrors([]);
+          setError("Access Denied Please Login Again");
+          handleClick(); 
+          localStorage.removeItem(`${user}Token`);
+          localStorage.removeItem("email");
+          localStorage.removeItem("login_user");
+          setTimeout(() => {
+              navigate("/admin_login");
+          }, 1200)
+        }
+        else{
+          setSubmitErrors([]);
+          setError(response.data.error);
+        }
+      }
+      else if(response.status === 403){
+          console.log("error 403");
+          setSubmitErrors(response.data.errors);
+      }
+      else{
+          setError("Cannot Upload, Try Again!");
+      }
+    }
+
   };
 
   const modalStyle = {
@@ -173,7 +333,7 @@ const Profile = () => {
         onClose={handleCloseModal1}
       >
         <Box sx={modalStyle} className={styles.modalBox}>
-          <UploadStudentList handleGoBack={handleCloseModal1} />
+          <UploadStudentList files={files} setFiles={setFiles} handleStudentList = {handleStudentList} handleGoBack={handleCloseModal1} />
         </Box>
       </Modal>
       <Modal
@@ -181,7 +341,7 @@ const Profile = () => {
         onClose={handleCloseModal2}
       >
         <Box sx={modalStyle} className={styles.modalBox}>
-          {/* <UploadRoomList handleGoBack={handleCloseModal2} /> */}
+          <UploadRoomList files={files} setFiles={setFiles} handleRoomList = {handleRoomList} handleGoBack={handleCloseModal2} />
           {/* <CheckTransaction handleGoBack={handleCloseModal2} /> */}
         </Box>
       </Modal>

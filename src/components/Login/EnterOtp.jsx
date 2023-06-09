@@ -52,7 +52,8 @@ const EnterOtp = () => {
   useEffect(function () {
     const encUser = localStorage.getItem("user");
     const user = decrypt((encUser ? encUser : ""));
-    const token = localStorage.getItem(`${user}Token`);
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
     if(user === "student"){
       if (token && token.length) {
         handleClick();
@@ -104,7 +105,7 @@ const EnterOtp = () => {
         },
         body: JSON.stringify({
           email: email,
-          otp: data.otp
+          otp: +data.otp
         }),
       }
     );
@@ -120,6 +121,7 @@ const EnterOtp = () => {
       setError("");
       setSubmitErrors([]);
       setSuccess("OTP Verified, Successfully Logged In");
+      localStorage.setItem(`${user}Token`, encrypt(resData.studentToken));
       setTimeout(() => {
         navigate("/student_profile");
       }, 500);

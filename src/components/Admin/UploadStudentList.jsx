@@ -1,12 +1,13 @@
 import React from 'react';
 import { Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-
+import "filepond/dist/filepond.min.css";
 import styles from "../../styles/uploadStudentList.module.css"; 
+import UploadFile from "./UploadFile.jsx"
 
-const UploadStudentList = ({ handleGoBack }) => {
+const UploadStudentList = ({ handleGoBack, files, setFiles , handleStudentList}) => {
     const handleProceed = () => {
-
+      handleStudentList();
     }
   return (
     <div className={styles.container}>
@@ -18,12 +19,17 @@ const UploadStudentList = ({ handleGoBack }) => {
                 <CloseIcon style={{width: '100%', height: '100%'}} />
             </div>
         </div>
-        <div className={styles.upload}>Upload File</div>
+        {/* <div className={styles.upload}>Upload File</div> */}
+
+        <div className={styles.upload}>
+          <UploadFile files={files} setFiles={setFiles}  />
+        </div>
+
         <div className={styles.buttonWrapper}>
          <Button variant="contained" onClick={() => handleProceed()} className={styles.proceedButton}>Proceed</Button>
         </div>
     </div>
-  )
+  );
 }
 
-export default UploadStudentList
+export default UploadStudentList;

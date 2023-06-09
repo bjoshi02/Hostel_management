@@ -65,7 +65,8 @@ const AdminLogIn = () => {
   useEffect(function () {
     const encUser = localStorage.getItem("user");
     const user = decrypt((encUser ? encUser : ""));
-    const token = localStorage.getItem(`${user}Token`);
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
     if (token && token.length) {
       handleClick();
       setError("Already Logged In. Please Logout First!!");
@@ -118,7 +119,7 @@ const AdminLogIn = () => {
       setError("");
       setSubmitErrors([]);
       setSuccess("Successfully logged in");
-      localStorage.setItem(`adminToken`, resData[`adminToken`]);
+      localStorage.setItem(`adminToken`, encrypt(resData[`adminToken`]));
       localStorage.setItem("email", encrypt(data.email));
       setTimeout(() => {
         navigate("/admin_profile");
