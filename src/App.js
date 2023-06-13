@@ -10,9 +10,9 @@ import Navbar from "./components/Navbar";
 import StudentProfile from './pages/StudentProfile';
 import AdminProfile from './pages/AdminProfile';
 import StudentUploadTransaction from './pages/StudentUploadTransaction';
+import Table from "./components/Table/PaginationTable"
 // import Table from "./components/Table/FiltertingTable"
 // import Table from "./components/Table/RowSelection"
-import Table from "./components/Table/PaginationTable"
 
 
 function App() {
@@ -27,6 +27,7 @@ function App() {
           <Route path="/admin_profile" element={<AdminProfile />} />
           <Route path="/student_profile" element={<StudentProfile />} />
           <Route path="/choose_room" element={<ChooseRoom />} />
+          <Route path="/upload_transaction" element={<StudentUploadTransaction />} />
           {/* <Route path="/societies">
             <Route index element={<Societies />} />
             <Route path=":societyid">

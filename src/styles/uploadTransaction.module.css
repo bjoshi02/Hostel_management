@@ -55,11 +55,15 @@
 }
 
 .upload{
-    width: 100%;
-    display: flex;
+    width: 85%;
+    /* height: 10rem; */
+    /* display: flex;
     align-items: center;
-    justify-content: flex-start;
-    margin-top: 1.5rem;;
+    justify-content: center; */
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    border: #051D59 dashed;
+    background-color: #F5F5F5 !important;
 }
 
 .buttonWrapper{

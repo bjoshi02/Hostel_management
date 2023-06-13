@@ -62,6 +62,7 @@ const ChooseRoom = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         setTimeout(() => {
           navigate(`/`);
         }, 500);
@@ -74,6 +75,7 @@ const ChooseRoom = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       setTimeout(() => {
         navigate(`/`);
       }, 500);
@@ -91,6 +93,7 @@ const ChooseRoom = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       navigate("/");
     }
     const response = await fetch(
@@ -116,6 +119,7 @@ const ChooseRoom = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         setTimeout(() => {
           navigate(`/`);
         }, 1000);
@@ -153,6 +157,7 @@ const ChooseRoom = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       navigate("/");
     }
     const response = await fetch(
@@ -179,6 +184,7 @@ const ChooseRoom = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         setTimeout(() => {
           navigate(`/`);
         }, 1000);
@@ -224,6 +230,7 @@ const ChooseRoom = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       navigate("/");
     }
     const response = await fetch(
@@ -250,6 +257,7 @@ const ChooseRoom = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         setTimeout(() => {
           navigate(`/`);
         }, 1000);
@@ -294,6 +302,7 @@ const ChooseRoom = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       navigate("/");
     }
     const response = await fetch(
@@ -320,6 +329,7 @@ const ChooseRoom = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         setTimeout(() => {
           navigate(`/`);
         }, 1000);
@@ -336,7 +346,7 @@ const ChooseRoom = () => {
       setError("");
       setSubmitErrors([]);
       setRooms(resData);
-      setSuccess("Successfully Got Floors Data");
+      setSuccess("Successfully Got Rooms Data");
     } else if (response.status === 500) {
       setError("Internal Server Error. Please Try Again later");
     }
@@ -346,12 +356,11 @@ const ChooseRoom = () => {
   };
 
   useEffect(() => {
-    if(room.length !== 0){
+    if(floor.length !== 0){
       getRoomDetails();
     }
   }, [floor]);
-  // transactionSubmit  
-
+  
   
   const handleHostelChange = (event) => {
     setRooms([]);
@@ -371,8 +380,36 @@ const ChooseRoom = () => {
   const handleRoomChange = (event) => {
     setRoom(event.target.value);
   };
-
-  const handleProceed = () => {};
+  // transactionSubmit  
+  
+  const handleProceed = async () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
+    
+    
+    if (!user || user !== "student" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    if(room.length > 0){
+      console.log(room);
+      localStorage.setItem("roomId", encrypt(room));
+      setTimeout(() => {
+        navigate('/upload_transaction');
+      }, 100);
+    }
+    else{
+      setSubmitErrors([]);
+      setError("Please Select a Room First");
+      handleClick();
+    }
+  };
 
   return (
     <div className={styles.container}>

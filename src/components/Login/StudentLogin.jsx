@@ -64,6 +64,7 @@ const StudentLogIn = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
     }
   }, []);
 
@@ -76,6 +77,7 @@ const StudentLogIn = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       navigate('/');
     }
     // //console.log(`${process.env.REACT_APP_website_link}/${user}/sendEmail`);        

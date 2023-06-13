@@ -21,11 +21,11 @@ function UploadFile({files,setFiles}) {
   return (
     <div>
       <FilePond
-        acceptedFileTypes={['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', '.csv']}
+        acceptedFileTypes={['application/pdf']}
         files={files}
-        allowMultiple={true}
+        allowMultiple={false}
         onupdatefiles={setFiles}
-        labelIdle="Drop/Upload Excell file"
+        labelIdle="Drop/Upload Hostel Reciept PDF"
         credits="false"
         name="attachments"
         style={{color: "red"}}

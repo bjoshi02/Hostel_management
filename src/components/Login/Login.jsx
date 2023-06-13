@@ -52,6 +52,7 @@ const LogIn = () => {
       localStorage.removeItem("user");
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
     }
   }, []);
 

@@ -78,6 +78,7 @@ const Profile = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         setTimeout(() => {
           navigate(`/`);
         }, 500);
@@ -91,6 +92,7 @@ const Profile = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       setTimeout(() => {
         navigate(`/`);
       }, 500);
@@ -132,6 +134,7 @@ const Profile = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       setTimeout(() => {
         navigate("/");
       }, 1000);
@@ -166,6 +169,7 @@ const Profile = () => {
           localStorage.removeItem(`${user}Token`);
           localStorage.removeItem("email");
           localStorage.removeItem("otp");
+          localStorage.removeItem("roomId");
           setTimeout(() => {
               navigate("/admin_login");
           }, 1200)
@@ -211,7 +215,8 @@ const Profile = () => {
       localStorage.removeItem("email");
       localStorage.removeItem("login_user");
       localStorage.removeItem("facultyToken");      
-      localStorage.removeItem("studentToken");      
+      localStorage.removeItem("studentToken");  
+      localStorage.removeItem("roomId");    
        setTimeout(() => {
          navigate("/admin_login");
        }, 2000);
@@ -245,6 +250,7 @@ const Profile = () => {
           localStorage.removeItem(`${user}Token`);
           localStorage.removeItem("email");
           localStorage.removeItem("login_user");
+          localStorage.removeItem("roomId");
           setTimeout(() => {
               navigate("/admin_login");
           }, 1200)

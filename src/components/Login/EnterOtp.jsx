@@ -65,6 +65,7 @@ const EnterOtp = () => {
       else {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
       }
     }
     else{
@@ -75,6 +76,7 @@ const EnterOtp = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       setTimeout(() => {
         navigate(`/`);
       }, 500);
@@ -93,6 +95,7 @@ const EnterOtp = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       navigate('/');
     }
 

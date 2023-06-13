@@ -60,6 +60,7 @@ const Profile = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         setTimeout(() => {
           navigate(`/`);
         }, 500);
@@ -72,6 +73,7 @@ const Profile = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       setTimeout(() => {
         navigate(`/`);
       }, 500);
@@ -91,6 +93,7 @@ const Profile = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       navigate("/");
     }
     const response = await fetch(
@@ -116,6 +119,7 @@ const Profile = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         setTimeout(() => {
           navigate(`/`);
         }, 1000);
@@ -161,6 +165,7 @@ const Profile = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         navigate("/");
       }
       navigate("/choose_room");
@@ -209,22 +214,22 @@ const Profile = () => {
           <Grid item xs={12} md={6} className={styles.secondBox}>
             <div className={styles.secondBoxContainer}>
               <div className={styles.secondBoxDiv}>
-                <span className={styles.secondBoxDivFirst}>Hostel</span>
+                <span className={styles.secondBoxDivFirst}>Hostel:</span>
                 <span className={styles.secondBoxDivSecond}>
-                  {studentData ? studentData.hostel : ""}
+                  {studentData ? studentData.hostel !== "" ? studentData.hostel : "No Data" : "No Data"}
                 </span>
               </div>
               <div className={styles.secondBoxDiv}>
-                <span className={styles.secondBoxDivFirst}>Block No.</span>
-                <span className={styles.secondBoxDivSecond}>{studentData ? studentData.block : ""}</span>
+                <span className={styles.secondBoxDivFirst}>Block No:</span>
+                <span className={styles.secondBoxDivSecond}>{studentData ? studentData.block !== "" ? studentData.block : "No Data" : "No Data" }</span>
               </div>
               <div className={styles.secondBoxDiv}>
-                <span className={styles.secondBoxDivFirst}>Floor No.</span>
-                <span className={styles.secondBoxDivSecond}>{studentData ? studentData.floor : ""}</span>
+                <span className={styles.secondBoxDivFirst}>Floor No:</span>
+                <span className={styles.secondBoxDivSecond}>{studentData ? studentData.floor !== -1 ? studentData.floor : "No Data" : "No Data"}</span>
               </div>
               <div className={styles.secondBoxDiv}>
-                <span className={styles.secondBoxDivFirst}>Room No.</span>
-                <span className={styles.secondBoxDivSecond}>{ studentData ? studentData.room : "" }</span>
+                <span className={styles.secondBoxDivFirst}>Room No:</span>
+                <span className={styles.secondBoxDivSecond}>{ studentData ? studentData.room !== -1 ? studentData.room : "No Data" : "" }</span>
               </div>
               <div className={styles.secondBoxButtonWrapper}>
                 <Button

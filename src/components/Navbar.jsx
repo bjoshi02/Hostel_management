@@ -111,6 +111,7 @@ const Navbar = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         setTimeout(() => {
           navigate(`/`);
         }, 500);
@@ -124,6 +125,7 @@ const Navbar = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       setTimeout(() => {
         navigate(`/`);
       }, 500);
@@ -146,6 +148,7 @@ const Navbar = () => {
         localStorage.removeItem(`${user}Token`);
         localStorage.removeItem("email");
         localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
         setTimeout(() => {
           navigate(`/`);
         }, 500);
@@ -159,6 +162,7 @@ const Navbar = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       setTimeout(() => {
         navigate(`/`);
       }, 500);
@@ -172,6 +176,7 @@ const Navbar = () => {
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
       setTimeout(() => {
         navigate(`/`);
       }, 100);
