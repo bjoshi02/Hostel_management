@@ -9,8 +9,10 @@ import ChooseRoom from "./pages/ChooseRoom";
 import Navbar from "./components/Navbar";
 import StudentProfile from './pages/StudentProfile';
 import AdminProfile from './pages/AdminProfile';
+import RoomRequest from './pages/RoomRequest';
 import StudentUploadTransaction from './pages/StudentUploadTransaction';
 import Table from "./components/Table/PaginationTable"
+import RowSelection from "./components/Table/RowSelection";
 // import Table from "./components/Table/FiltertingTable"
 // import Table from "./components/Table/RowSelection"
 
@@ -35,7 +37,8 @@ function App() {
               <Route path=":clubid" element={<ThinkIndia />} />
             </Route>
           </Route> */} 
-
+          <Route path="/room_request" element={<RoomRequest />} />
+          <Route path="/table" element={<RowSelection />} />
         </Routes>
       </Router>
     </>

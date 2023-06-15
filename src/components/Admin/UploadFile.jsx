@@ -25,7 +25,7 @@ function UploadFile({files,setFiles}) {
         files={files}
         allowMultiple={true}
         onupdatefiles={setFiles}
-        labelIdle="Drop/Upload Excell file"
+        labelIdle="Drop/Upload Excel file"
         credits="false"
         name="attachments"
         style={{color: "red"}}

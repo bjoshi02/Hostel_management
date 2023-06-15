@@ -5,10 +5,10 @@ import "filepond/dist/filepond.min.css";
 import styles from "../../styles/uploadStudentList.module.css"; 
 import UploadFile from "./UploadFile.jsx"
 
-const UploadStudentList = ({ handleGoBack, files, setFiles , handleStudentList}) => {
-    const handleProceed = () => {
+const UploadStudentList = ({ handleGoBack, files, setFiles , handleListLock}) => {
+    const handleLock = () => {
       handleGoBack();
-      handleStudentList();
+      handleListLock();
     }
   return (
     <div className={styles.container}>
@@ -27,7 +27,7 @@ const UploadStudentList = ({ handleGoBack, files, setFiles , handleStudentList})
         </div>
 
         <div className={styles.buttonWrapper}>
-         <Button variant="contained" onClick={() => handleProceed()} className={styles.proceedButton}>Proceed</Button>
+         <Button variant="contained" onClick={() => handleLock()} className={styles.proceedButton}>Lock</Button>
         </div>
     </div>
   );

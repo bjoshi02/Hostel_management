@@ -108,7 +108,7 @@ const Profile = () => {
   const handleCheckRequest = () => {
     // const encryptedData = encrypt("admin");
     // localStorage.setItem("login_user", encryptedData);
-    // navigate('/login_admin');
+    navigate('/room_request');
   };
 
   const handleStudentList = async () => {
@@ -153,7 +153,7 @@ const Profile = () => {
         setFiles([]);
         setTimeout(() => {
           // navigate(0);
-          setOpenModal1(false);
+          // setOpenModal1(false);
         }, 1200);
         handleClick();
     }
@@ -235,7 +235,7 @@ const Profile = () => {
         setFiles([]);
         setTimeout(() => {
           // navigate(0);
-          setOpenModal2(false);
+          // setOpenModal2(false);
         }, 1200);
         handleClick();
     }

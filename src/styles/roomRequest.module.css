@@ -1,0 +1,110 @@
+.container{
+    padding-top: 8rem;
+    padding-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.paperStyle{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh;
+    width: 100vw; */
+    width: 85%;
+}
+
+.heading{
+    font-size: 2.5rem;
+    text-align: left;
+    font-weight: 500;
+    width: 100%;
+    margin-left: 1.2rem;
+    margin-top: 0.3rem;
+}
+
+.tableContainer{
+    width: 90%;   
+    margin-top : 1rem;
+    margin-bottom : 2rem;
+}
+
+.buttonContainer{
+    width: 75%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    /* margin-left: 3rem;
+    margin-right: 3rem; */
+}
+
+.buttonSubContainer1{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.buttonSubContainer2{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.buttonRoom{
+    /* width: 100%; */
+    /* height: 3rem; */
+    /* font-size: 1.2rem; */
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: rgb(33, 174, 187) !important;
+    color: #FFFFFF;
+    margin: 0.5rem 0.5rem !important;
+    padding: 0.5rem !important;
+}
+
+@media (max-width: 900px){
+    .buttonContainer{
+        width: 80%;
+    }
+    .buttonSubContainer1{        
+        width: 45%
+    }
+    
+    .buttonSubContainer2{        
+        width: 30%
+    }
+    .buttonRoom{
+        margin: 0.3rem 0.3rem;
+    }
+}
+
+@media (max-width: 650px){
+    .buttonSubContainer1{        
+        width: 45%
+    }    
+    .buttonSubContainer2{        
+        width: 30%
+    }
+    .buttonRoom{
+        margin: 0.3rem 0.3rem;
+    }
+}
+
+@media (max-width: 600px){
+    .buttonSubContainer1{        
+        width: 90%
+    }    
+    .buttonSubContainer2{        
+        width: 90%
+    }
+    .buttonRoom{
+        margin: 0.3rem 0.3rem;
+    }
+}
