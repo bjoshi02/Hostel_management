@@ -11,7 +11,7 @@ import { GlobalFilter } from './GlobalFilter'
 const RowSelection = ({ requests, setSelectedRows }) => {
   const columns = useMemo(() => COLUMNS, [])
   const data = useMemo(() => requests.map((request) => {
-    console.log(request.floorNo);
+    // console.log(request.floorNo);
     return {
       _id: request._id,
       id: request.email ? request.email.slice(0,11) : "",

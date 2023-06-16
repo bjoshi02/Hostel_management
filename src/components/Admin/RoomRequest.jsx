@@ -12,6 +12,7 @@ import styles from '../../styles/roomRequest.module.css';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import axios from 'axios';
+
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -111,6 +112,130 @@ const RoomRequest = () => {
       }
     }
 
+  }
+
+  const handleUnlockClick = async () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
+
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    // adminToken, studentArray
+    // student ID -> _id address hoga isme
+    // const studentArray = JSON.parse(selectedRows);
+    console.log("selected Rows : ", selectedRows);
+
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/unlockroom`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          adminToken: token,
+          studentArray: selectedRows.map((row) => {
+            return row.original._id;
+          })
+        })
+      }
+    );
+    let resData = await response.json();
+    if (response.status === 400) {
+      // //console.log(resData.error);
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      if(resData.error === "Access denied"){
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 1000);
+      }
+      // //console.log(error)
+    } else if (response.status === 200) {
+      setError("");
+      setSubmitErrors([]);
+      setSuccess("Successfully Unlocked Rooms of Selected Students");
+      navigate(0);
+    } else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+  }
+
+  const handleLockClick = async () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
+
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/lockroom`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          adminToken: token,
+          studentArray: selectedRows.map((row) => {
+            return row.original._id;
+          })
+        })
+      }
+    );
+    let resData = await response.json();
+    if (response.status === 400) {
+      // //console.log(resData.error);
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      if(resData.error === "Access denied"){
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 1000);
+      }
+      // //console.log(error)
+    } else if (response.status === 200) {
+      setError("");
+      setSubmitErrors([]);
+      setSuccess("Successfully Locked Rooms of Selected Students");
+      navigate(0);
+    } else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
   }
 
   
@@ -231,7 +356,7 @@ const RoomRequest = () => {
     if(sent === false){
         getRequestsData();
     }
-  })
+  },[sent]);
 
   const modalStyle = {
     position: 'absolute',
@@ -263,10 +388,10 @@ const RoomRequest = () => {
             </Button>
           </div>
           <div className={styles.buttonSubContainer2}>
-            <Button variant="contained" className={styles.buttonRoom}>
+            <Button variant="contained" onClick={handleUnlockClick} className={styles.buttonRoom}>
               Unlock
             </Button>
-            <Button variant="contained" className={styles.buttonRoom}>
+            <Button variant="contained" onClick={handleLockClick} className={styles.buttonRoom}>
               Lock
             </Button>
           </div>
