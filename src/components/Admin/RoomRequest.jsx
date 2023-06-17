@@ -238,6 +238,83 @@ const RoomRequest = () => {
     }, 100);
   }
 
+  const handleDownloadList = async () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
+
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/downloadList`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          adminToken: token,
+        })
+      }
+    );
+    if (response.status === 400) {
+      let resData = await response.json();
+      // //console.log(resData.error);
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      if(resData.error === "Access denied"){
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 1000);
+      }
+      // //console.log(error)
+    } else if (response.status === 200) {
+      setError("");
+      setSubmitErrors([]);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(
+        new Blob([blob]),
+      );
+      // console.log("Url", url);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute(
+        'download',
+        'studentData.xlsx',
+      );
+  
+        // Append to html link element page
+      document.body.appendChild(link);
+  
+      // Start download
+      link.click();
+  
+      // Clean up and remove the link
+      link.parentNode.removeChild(link);
+
+      setSuccess("Successfully Downloaded Student List");
+      navigate(0);
+    } else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+  }
+
   
   const handleClick = () => {
     setOpen(true);
@@ -383,7 +460,7 @@ const RoomRequest = () => {
             <Button onClick={handleUploadCheckList} variant="contained" className={styles.buttonRoom}>
               Upload List
             </Button>
-            <Button variant="contained" className={styles.buttonRoom}>
+            <Button variant="contained" onClick={handleDownloadList} className={styles.buttonRoom}>
               Download List
             </Button>
           </div>
