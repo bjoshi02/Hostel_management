@@ -16,6 +16,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import { encrypt, decrypt } from '../../crypto/crypto';
+import CryptoJS from "crypto-js";
 
 import UploadStudentList from './UploadStudentList';
 import UploadRoomList from './UploadRoomList';
@@ -47,8 +48,62 @@ const Profile = () => {
   const handleOpenModal2 = () => setOpenModal2(true);
   const handleCloseModal2 = () => setOpenModal2(false);
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     setChecked(event.target.checked);
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
+
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/acceptingResponses`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          adminToken: token,
+          isAccepting: event.target.checked
+        }),
+      }
+    );
+    let resData = await response.json();
+    if (response.status === 400) {
+      // //console.log(resData.error);
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      if(resData.error === "Access denied"){
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 1000);
+      }
+      // //console.log(error)
+    } else if (response.status === 200) {
+      setError("");
+      setSubmitErrors([]);
+      setSuccess("Successfully Changed Accepting Responses");
+    } else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+
   };
 
   const handleClick = () => {
@@ -97,6 +152,66 @@ const Profile = () => {
         navigate(`/`);
       }, 500);
     }
+  }, []);
+
+  const getAcceptingResponses = async () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
+
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/getDetails`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          adminToken: token,
+        }),
+      }
+    );
+    let resData = await response.json();
+    if (response.status === 400) {
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      if(resData.error === "Access denied"){
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 1000);
+      }
+      // //console.log(error)
+    } else if (response.status === 200) {
+      setError("");
+      setSubmitErrors([]);
+      setSuccess("Successfully got Admin Data");
+      setChecked(resData.isAccepting);
+    } else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+
+  };
+
+  useEffect(() => {
+    getAcceptingResponses();
   }, []);
 
   const handleUploadStudent = () => {

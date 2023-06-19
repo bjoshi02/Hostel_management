@@ -139,6 +139,7 @@ const Profile = () => {
       setError("");
       setSubmitErrors([]);
       setStudentData(resData);
+      console.log(resData);
       setSuccess("Successfully Got Data");
     } else if (response.status === 500) {
       setError("Internal Server Error. Please Try Again later");
@@ -233,7 +234,7 @@ const Profile = () => {
               </div>
               <div className={styles.secondBoxButtonWrapper}>
                 <Button
-                  disabled={studentData ? studentData.permanentLocked === true ? true : studentData.tempLocked : false}
+                  disabled={studentData ? (studentData.isAccepting === true ? (studentData.permanentLocked === true ? true : studentData.tempLocked) : true) : true}
                   variant="contained"
                   onClick={() => handleChooseRoom()}
                   className={styles.secondBoxButton}
