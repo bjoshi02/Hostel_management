@@ -8,9 +8,11 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Tooltip from '@mui/material/Tooltip';
 import Switch from '@mui/material/Switch';
 import { alpha, styled } from '@mui/material/styles';
 import { green, deepOrange } from '@mui/material/colors';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import Avatar from '@mui/material/Avatar';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -181,6 +183,7 @@ const Profile = () => {
       }
     );
     let resData = await response.json();
+    setChecked(resData.isAccepting);
     if (response.status === 400) {
       setSubmitErrors([]);
       setSuccess("");
@@ -200,7 +203,6 @@ const Profile = () => {
       setError("");
       setSubmitErrors([]);
       setSuccess("Successfully got Admin Data");
-      setChecked(resData.isAccepting);
     } else if (response.status === 500) {
       setError("Internal Server Error. Please Try Again later");
     }
@@ -442,9 +444,20 @@ const Profile = () => {
           <Grid item xs={12} md={6} className={styles.secondBox}>
             <div className={styles.secondBoxContainer}>
               {/* <div className={styles.secondBoxHeader}>Profile</div> */}
-              <Button variant="contained" onClick={() => handleUploadStudent()} className={styles.secondBoxButton}>Upload Student List</Button>
-              <Button variant="contained" onClick={() => handleUploadRoom()} className={styles.secondBoxButton}>Upload Room List</Button>
-              <Button variant="contained" onClick={() => handleCheckRequest()} className={styles.secondBoxButton}>Check Room Request</Button>
+              <div className={styles.secondBoxWrapper}>
+                <Button variant="contained" onClick={() => handleUploadStudent()} className={styles.secondBoxButton}>Upload Student List</Button>
+                <Tooltip title="Download Format">
+                    <FileDownloadIcon />
+                </Tooltip>
+              </div>
+              <div className={styles.secondBoxWrapper}>
+                <Button variant="contained" onClick={() => handleUploadRoom()} className={styles.secondBoxButton}>Upload Room List</Button>
+                <Tooltip title="Download Format">
+                  <FileDownloadIcon />  
+                </Tooltip>
+              </div>              
+              <Button variant="contained" onClick={() => handleCheckRequest()} className={styles.secondBoxButton} style={{ width: '100%' }}>Check Room Request</Button>
+            
             </div>
           </Grid>
         </Grid>
