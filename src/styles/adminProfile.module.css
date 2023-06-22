@@ -80,7 +80,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.3rem;
 }
+
 
 .secondBoxButton{
     margin-top: 1.2rem !important;
@@ -91,6 +93,14 @@
     background-color: #1C4EFE !important;
     padding: 1rem !important;
     width: 100%;
+}
+
+.secondBoxDownloadButton{
+    height: 100% !important;
+    width: 20% !important;
+    cursor: pointer !important;
+    margin-top: 1.2rem;
+    color: #1C4EFE !important;
 }
 
 @media (min-width: 545px) {
@@ -109,9 +119,15 @@
     .secondBoxHeader{
         font-size: 2.5rem;
     }
+    .secondBoxWrapper{
+        gap: 0.5rem;
+    }
     .secondBoxButton{
         font-size: 1rem !important;
         padding: 1rem !important;
+    }
+    .secondBoxDownloadButton{
+        width: 15% !important;
     }
 }
 
@@ -133,12 +149,18 @@
         font-size: 1rem !important;
         width: 80%;
     }
+    .secondBoxDownloadButton{
+        width: 12% !important;
+    }
 }
 
 @media (min-width: 800px) {
     .modalBox{
         width: 65% !important;
     }    
+    .secondBoxDownloadButton{
+        width: 10% !important;
+    }
 }
 
 @media (min-width: 900px) {
@@ -162,6 +184,9 @@
     }
     .secondBoxButton{
         font-size: 1rem !important;
+    }
+    .secondBoxDownloadButton{
+        width: 15% !important;
     }
 }
 
@@ -190,5 +215,8 @@
     .secondBoxButton{
         font-size: 1rem !important;
         width: 80%;
+    }
+    .secondBoxDownloadButton{
+        width: 12% !important;
     }
 }

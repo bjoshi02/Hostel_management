@@ -16,7 +16,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 //     "react-filepond": "^7.1.2",
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileEncode, FilePondPluginFileValidateType);
 
-function UploadFile({files,setFiles}) {
+function UploadFile({files,setFiles,checked}) {
 
   return (
     <div>
@@ -25,7 +25,7 @@ function UploadFile({files,setFiles}) {
         files={files}
         allowMultiple={false}
         onupdatefiles={setFiles}
-        labelIdle="Drop/Upload Hostel Reciept PDF"
+        labelIdle= {checked===false ? "Drop/Upload Hostel Reciept PDF" : "Drop/Upload Proof"}
         credits="false"
         name="attachments"
         style={{color: "red"}}

@@ -11,6 +11,7 @@ import CryptoJS from "crypto-js";
 import UploadFile from './UploadFile';
 import axios from 'axios';
 import styles from "../../styles/uploadTransaction.module.css";
+import Checkbox from '@mui/material/Checkbox';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -39,6 +40,25 @@ const UploadTransaction = ({ handleGoBack }) => {
   };
   
   const [value, setValue] = useState("0000000000000000");
+  const [textBoxValue, setTextBoxValue] = useState("");
+  const [checked, setChecked] = useState(false);
+  const [editable, setEditable] = useState(true);
+  const [visible, setVisible] = useState(false);
+
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+    if(checked === false){
+      setEditable(false);
+      setValue("1234567890");
+      setVisible(true);
+    }
+    else{
+      setEditable(true);
+      setValue("0000000000000000");
+      setVisible(false);
+    }
+  };
 
   useEffect(function () {
     const encUser = localStorage.getItem("user");
@@ -95,13 +115,19 @@ const UploadTransaction = ({ handleGoBack }) => {
     if(value.length > 0){
       let formData=new FormData();
 
-    for(let i=0;i<files.length;i++){
-        formData.append("attachments",files[i].file);
-    }
-    
+      
     formData.append('studentToken', token);
     formData.append('roomId', room);
     formData.append('transactionId', value);
+
+    for(let i=0;i<files.length;i++){
+        formData.append("attachments",files[i].file);
+    }
+
+    console.log("Token: ", token);
+    console.log("roomId: ", room);
+    console.log("transactionId: ", value);
+    
 
     try{
       await axios.post(`${process.env.REACT_APP_WEBSITE_LINK}/student/transactionSubmit`,formData,{ headers: {
@@ -119,7 +145,8 @@ const UploadTransaction = ({ handleGoBack }) => {
         }, 500);
     }
     catch(error){
-      const response = error.response;       
+      const response = error.response;   
+      console.log(response);    
       if(response.status === 400){
         if(response.data.error === "Access denied"){
           setSubmitErrors([]);
@@ -170,11 +197,21 @@ const UploadTransaction = ({ handleGoBack }) => {
             <div className={styles.bodyWrapper}>
                 <div className={styles.footer}>
                     <div className={styles.footerFirst}>Transaction ID</div>
-                    <TextField id="transaction-id" className={styles.footerSecond} label="Transaction ID" value={value} onChange={(event) => { setValue(event.target.value); }} variant="outlined" />
+                    <TextField id="transaction-id" className={styles.footerSecond} label="Transaction ID" value={value} onChange={(event) => { setValue(event.target.value); }} disabled={ editable===true ? false : true } variant="outlined" />
                     {/* <input type="text" className={styles.footerSecond} value={value} onChange={handleChange} id="fname" name="fname">{value}</input> */}
                 </div>
+                <div className={styles.checkBoxDiv}>
+                  <Checkbox 
+                    checked={checked}
+                    onChange={handleChange}
+                  />
+                  <div>Offline Payment</div>
+                </div>
+                <div className={styles.textBox} style={{ display: visible===true ? 'block' : 'none' }}>
+                  <TextField id="reason" className={styles.footerSecond} label="Reason" value={textBoxValue} onChange={(event) => { setTextBoxValue(event.target.value); }} disabled={ editable===true ? true : false } multiline rows={6} variant="outlined" />
+                </div>
                 <div className={styles.upload}>
-                  <UploadFile files = {files}  setFiles = {setFiles}/>
+                  <UploadFile files = {files} checked={checked}  setFiles = {setFiles}/>
                   {/* <input type="file"  onChange ={setFiles} /> */}
                 </div>
             </div>

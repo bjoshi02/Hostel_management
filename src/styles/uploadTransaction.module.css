@@ -54,6 +54,17 @@
     width: 85%;
 }
 
+.checkBoxDiv{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 85%;
+}
+
+.textBox{
+    width: 100%;
+}
+
 .upload{
     width: 85%;
     /* height: 10rem; */

@@ -34,4 +34,12 @@ table td + td + td + td + td {
   color: green;
 }
 
+table td + td + td + td + td + td {
+  /* color: black; */
+  text-decoration: underline;
+  color: blue;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 

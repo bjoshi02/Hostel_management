@@ -18,6 +18,8 @@ const RowSelection = ({ requests, setSelectedRows }) => {
       name: request.name,
       room_allocated: (request.roomNo ? request.roomNo.toString() + "," : "")  + (request.floorNo !== undefined ? request.floorNo.toString() + "," : "")  + request.block + "," + request.hostelName,
       status: request.tempLocked === true ? "Temp Locked" : "Not Locked",
+      fileURL : request.fileURL,
+      details: "View"
     }
   }), [requests]);
   
@@ -81,6 +83,10 @@ const RowSelection = ({ requests, setSelectedRows }) => {
     setSelectedRows(selectedFlatRows);
   }, [selectedFlatRows])
 
+  const handleViewDetails = async (data) => {
+      console.log(data);
+  }
+
   return (
     <>
       <div
@@ -116,14 +122,24 @@ const RowSelection = ({ requests, setSelectedRows }) => {
           </thead>
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
+              console.log(row);
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
+                  {row.cells.map((cell, idx) => {
+                    if(idx === 5){
+                      return (
+                        <td {...cell.getCellProps()} onClick={() => handleViewDetails(row.original)}>{cell.render("Cell")}</td>
+                      );
+                    }
+                    else{
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      );
+                    }
+                    
                   })}
+                  {/* <td><button >View</button></td> */}
                 </tr>
               );
             })}

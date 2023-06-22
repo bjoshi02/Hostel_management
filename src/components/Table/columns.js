@@ -29,4 +29,9 @@ export const COLUMNS = [
     Footer: 'Status',
     accessor: 'status'
   },
+  {
+    Header: 'Details',
+    Footer: 'Details',
+    accessor: 'details'
+  },
 ]

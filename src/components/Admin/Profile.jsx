@@ -212,6 +212,26 @@ const Profile = () => {
 
   };
 
+  const handleAllocateRoom = () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
+
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+
+  };
+
   useEffect(() => {
     getAcceptingResponses();
   }, []);
@@ -238,9 +258,6 @@ const Profile = () => {
 
     let formData=new FormData();
 
-    for(let i=0;i<files.length;i++){
-        formData.append("attachments",files[i].file);
-    }
     
     if(user ===  "admin"){
       formData.append(`adminToken`, token);
@@ -256,7 +273,10 @@ const Profile = () => {
         navigate("/");
       }, 1000);
     }
-
+    
+    for(let i=0;i<files.length;i++){
+        formData.append("attachments",files[i].file);
+    }
 
     try{
       await axios.post(`${process.env.REACT_APP_WEBSITE_LINK}/admin/uploadstudentlist`,formData,{ headers: {
@@ -388,6 +408,24 @@ const Profile = () => {
 
   };
 
+  const handleDownloadStudentListFormat = () => {
+    const a = document.createElement('a')
+    a.href = "/logo192.png";
+    a.download = "logo192.png"
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
+
+  const handleDownloadRoomListFormat = () => {
+    const a = document.createElement('a')
+    a.href = "/robots.txt";
+    a.download = "robots.txt"
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
+
   const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -447,16 +485,17 @@ const Profile = () => {
               <div className={styles.secondBoxWrapper}>
                 <Button variant="contained" onClick={() => handleUploadStudent()} className={styles.secondBoxButton}>Upload Student List</Button>
                 <Tooltip title="Download Format">
-                    <FileDownloadIcon />
+                    <FileDownloadIcon onClick={() => handleDownloadStudentListFormat()} className={styles.secondBoxDownloadButton} />
                 </Tooltip>
               </div>
               <div className={styles.secondBoxWrapper}>
                 <Button variant="contained" onClick={() => handleUploadRoom()} className={styles.secondBoxButton}>Upload Room List</Button>
                 <Tooltip title="Download Format">
-                  <FileDownloadIcon />  
+                  <FileDownloadIcon onClick={() => handleDownloadRoomListFormat()} className={styles.secondBoxDownloadButton} />  
                 </Tooltip>
               </div>              
               <Button variant="contained" onClick={() => handleCheckRequest()} className={styles.secondBoxButton} style={{ width: '100%' }}>Check Room Request</Button>
+              <Button variant="contained" onClick={() => handleAllocateRoom()} className={styles.secondBoxButton} style={{ width: '100%' }}>Allocate Room to a Student</Button>
             
             </div>
           </Grid>

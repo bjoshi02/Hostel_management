@@ -42,10 +42,10 @@ const ChooseRoom = () => {
   const [floors, setFloors] = useState([]);
   const [rooms, setRooms] = useState([]);
 
-  const [hostel, setHostel] = React.useState("");
-  const [block, setBlock] = React.useState("");
-  const [floor, setFloor] = React.useState("");
-  const [room, setRoom] = React.useState("");
+  const [hostel, setHostel] = useState("");
+  const [block, setBlock] = useState("");
+  const [floor, setFloor] = useState("");
+  const [room, setRoom] = useState("");
 
   useEffect(function () {
     const encUser = localStorage.getItem("user");
@@ -498,7 +498,7 @@ const ChooseRoom = () => {
                 <InputLabel id="room-label">Room</InputLabel>
                 <Select
                   labelId="room-label"
-                  value={room}
+                  value={room+""}
                   label="Room"
                   onChange={handleRoomChange}
                 >
