@@ -5,21 +5,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import styles from "../../styles/checkTransaction.module.css"; 
 
 const CheckTransaction = ({ details, handleGoBack }) => {
-    const [preview, setPreview] = useState();
 
-    useEffect(() => {
-        if (!details || !details.fileURL) {
-            setPreview(undefined);
-            return;
-        }
-
-        // create the preview
-        const objectUrl = URL.createObjectURL(details.fileURL);
-        setPreview(objectUrl)
-
-        // free memory when ever this component is unmounted
-        return () => URL.revokeObjectURL(objectUrl)
-     }, [])
+   
     
   return (
     <div className={styles.container}>
@@ -32,7 +19,7 @@ const CheckTransaction = ({ details, handleGoBack }) => {
             </div>
         </div>
         <div className={styles.upload}>
-            <img src={preview} alt="File Preview" />
+            <a alt="File_Preview" target="_blank" href={details.fileURL}>View Details</a>
         </div>
         <div className={styles.footer}>
             <div className={styles.footerFirst}>Tx ID</div>

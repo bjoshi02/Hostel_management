@@ -5,6 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Paper from "@mui/material/Paper";
 import Snackbar from "@mui/material/Snackbar";
+import TextField from "@mui/material/TextField";
 import MuiAlert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -41,6 +42,7 @@ const ChooseRoom = () => {
   const [floors, setFloors] = useState([]);
   const [rooms, setRooms] = useState([]);
 
+    const [studentId, setStudentId] = useState("");
   const [hostel, setHostel] = useState("");
   const [block, setBlock] = useState("");
   const [floor, setFloor] = useState("");
@@ -416,6 +418,34 @@ const ChooseRoom = () => {
       <Paper className={styles.wrapper}>
         <div className={styles.formWrapper}>
           <div className={styles.formDiv}>
+            <span className={styles.formDivFirst}>Student ID</span>
+            <span className={styles.formDivSecond}>
+              <FormControl
+                sx={{ m: 1, width: "100%" }}
+                style={{ margin: "0px" }}
+              >
+                {/* <InputLabel id="studentId-label">Student ID</InputLabel> */}
+                <TextField
+                  id="studentId"
+                  type="text"
+                  value={studentId}
+                  onChange={(e) => setStudentId(e.target.value)}
+                  label="Student ID"
+                  variant="outlined"
+                />
+              </FormControl>
+            </span>
+          </div>
+          <div className={styles.buttonWrapper}>
+            <Button
+              variant="contained"
+              // onClick={() => handleProceed()}
+              className={styles.proceedButton}
+            >
+              Get Details
+            </Button>
+          </div>
+          <div className={styles.formDiv}>
             <span className={styles.formDivFirst}>Hostel</span>
             <span className={styles.formDivSecond}>
               <FormControl
@@ -427,7 +457,7 @@ const ChooseRoom = () => {
                   labelId="hostel-label"
                   value={hostel}
                   label="Hostel"
-                //   onChange={handleHostelChange}
+                  //   onChange={handleHostelChange}
                 >
                   {
                     // hostelNo: { type: Number, required: true },
@@ -458,7 +488,7 @@ const ChooseRoom = () => {
                   labelId="block-label"
                   value={block}
                   label="Block"
-                //   onChange={handleBlockChange}
+                  //   onChange={handleBlockChange}
                 >
                   {blocks.map((block) => {
                     return <MenuItem value={block._id}>{block.block}</MenuItem>;
@@ -479,7 +509,7 @@ const ChooseRoom = () => {
                   labelId="floor-label"
                   value={floor}
                   label="Floor"
-                //   onChange={handleFloorChange}
+                  //   onChange={handleFloorChange}
                 >
                   {floors.map((floor) => {
                     return (
@@ -502,7 +532,7 @@ const ChooseRoom = () => {
                   labelId="room-label"
                   value={room + ""}
                   label="Room"
-                //   onChange={handleRoomChange}
+                  //   onChange={handleRoomChange}
                 >
                   {
                     // bedNo : {type : Number, required : true},
