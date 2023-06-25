@@ -1,0 +1,21 @@
+.modalBox{
+    width: 85% !important;
+}
+
+@media (min-width: 545px) {
+    .modalBox{
+        width: 75% !important;
+    }    
+}
+
+@media (min-width: 800px) {
+    .modalBox{
+        width: 65% !important;
+    }    
+}
+
+@media (min-width: 1150px) {
+    .modalBox{
+        width: 50% !important;
+    }   
+}

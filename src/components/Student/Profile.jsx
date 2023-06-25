@@ -203,7 +203,7 @@ const Profile = () => {
             >
               {studentData ? studentData.name ? studentData.name.slice(0,1) : 'S' : 'S'}
             </Avatar>
-            <div className={styles.firstBoxHeader}>{studentData? studentData.name : ""}</div>
+            <div className={styles.firstBoxHeader}>{studentData ? studentData.name : ""}</div>
             <div className={styles.firstBoxSubHeader}>{studentData? studentData.email ? studentData.email.slice(0, 11) : "" : ""}</div>
             <div
               className={styles.firstBoxRoom}
@@ -217,20 +217,20 @@ const Profile = () => {
               <div className={styles.secondBoxDiv}>
                 <span className={styles.secondBoxDivFirst}>Hostel:</span>
                 <span className={styles.secondBoxDivSecond}>
-                  {studentData ? studentData.hostel !== "" ? studentData.hostel : "No Data" : "No Data"}
+                  {studentData ? studentData.tempLocked === true ? studentData.hostel !== "" ? studentData.hostel : "No Data" : "No Data" : "No Data"}
                 </span>
               </div>
               <div className={styles.secondBoxDiv}>
                 <span className={styles.secondBoxDivFirst}>Block No:</span>
-                <span className={styles.secondBoxDivSecond}>{studentData ? studentData.block !== "" ? studentData.block : "No Data" : "No Data" }</span>
+                <span className={styles.secondBoxDivSecond}>{studentData ? studentData.tempLocked === true ? studentData.block !== "" ? studentData.block : "No Data" : "No Data" : "No Data"}</span>
               </div>
               <div className={styles.secondBoxDiv}>
                 <span className={styles.secondBoxDivFirst}>Floor No:</span>
-                <span className={styles.secondBoxDivSecond}>{studentData ? studentData.floor !== -1 ? studentData.floor : "No Data" : "No Data"}</span>
+                <span className={styles.secondBoxDivSecond}>{studentData ? studentData.tempLocked === true ? studentData.floor !== -1 ? studentData.floor : "No Data" : "No Data" : "No Data"}</span>
               </div>
               <div className={styles.secondBoxDiv}>
                 <span className={styles.secondBoxDivFirst}>Room No:</span>
-                <span className={styles.secondBoxDivSecond}>{ studentData ? studentData.room !== -1 ? studentData.room : "No Data" : "" }</span>
+                <span className={styles.secondBoxDivSecond}>{ studentData ? studentData.tempLocked === true ? studentData.room !== -1 ? studentData.room : "No Data" : "No Data" : "No Data"}</span>
               </div>
               <div className={styles.secondBoxButtonWrapper}>
                 <Button

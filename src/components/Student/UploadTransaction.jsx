@@ -113,69 +113,71 @@ const UploadTransaction = ({ handleGoBack }) => {
       navigate("/");
     }
     if(value.length > 0){
-      let formData=new FormData();
-
+      if(checked === false || (value === '1234567890' && textBoxValue.length > 100)){
+          let formData=new FormData();      
+          
+          formData.append('studentToken', token);
+          formData.append('roomId', room);
+          formData.append('transactionId', value);
+          formData.append('remarks', textBoxValue);
       
-    formData.append('studentToken', token);
-    formData.append('roomId', room);
-    formData.append('transactionId', value);
-
-    for(let i=0;i<files.length;i++){
-        formData.append("attachments",files[i].file);
-    }
-
-    console.log("Token: ", token);
-    console.log("roomId: ", room);
-    console.log("transactionId: ", value);
-    
-
-    try{
-      await axios.post(`${process.env.REACT_APP_WEBSITE_LINK}/student/transactionSubmit`,formData,{ headers: {
-        'content-type': 'multipart/form-data'
-      }});
-
-      // console.log("Hello Found")
-        setSubmitErrors([]);
-        setError("");
-        setSuccess("Room Temporarily Locked!");
-        setFiles([]);
-        handleClick();
-        setTimeout(() => {
-          navigate(`/student_profile`);
-        }, 500);
-    }
-    catch(error){
-      const response = error.response;   
-      console.log(response);    
-      if(response.status === 400){
-        if(response.data.error === "Access denied"){
-          setSubmitErrors([]);
-          setError("Access Denied Please Login Again");
-          handleClick(); 
-          localStorage.removeItem("user");
-          localStorage.removeItem(`${user}Token`);
-          localStorage.removeItem("email");
-          localStorage.removeItem("otp");
-          localStorage.removeItem("roomId");
-          setTimeout(() => {
-              navigate("/");
-          }, 1200)
-        }
-        else{
-          setSubmitErrors([]);
-          setError(response.data.error);
-        }
+          for(let i=0;i<files.length;i++){
+              formData.append("attachments",files[i].file);
+          }
+      
+          try{
+            await axios.post(`${process.env.REACT_APP_WEBSITE_LINK}/student/transactionSubmit`,formData,{ headers: {
+              'content-type': 'multipart/form-data'
+            }});
+      
+            // console.log("Hello Found")
+              setSubmitErrors([]);
+              setError("");
+              setSuccess("Room Temporarily Locked!");
+              setFiles([]);
+              handleClick();
+              setTimeout(() => {
+                navigate(`/student_profile`);
+              }, 500);
+          }
+          catch(error){
+            const response = error.response;   
+            console.log(response);    
+            if(response.status === 400){
+              if(response.data.error === "Access denied"){
+                setSubmitErrors([]);
+                setError("Access Denied Please Login Again");
+                handleClick(); 
+                localStorage.removeItem("user");
+                localStorage.removeItem(`${user}Token`);
+                localStorage.removeItem("email");
+                localStorage.removeItem("otp");
+                localStorage.removeItem("roomId");
+                setTimeout(() => {
+                    navigate("/");
+                  }, 1200)
+                }
+                else{
+                  setSubmitErrors([]);
+                  setError(response.data.error);
+                }
+              }
+              else if(response.status === 403){
+                console.log("error 403");
+                setSubmitErrors(response.data.errors);
+              }
+              else{
+                setSubmitErrors([]);
+                setError("Cannot Upload, Try Again!");
+              }
+            }
+          }          
+          else{
+            setSubmitErrors([]);
+            setError("Reason should be atleast 100 characters long!!");
+            handleClick();
+          }           
       }
-      else if(response.status === 403){
-          console.log("error 403");
-          setSubmitErrors(response.data.errors);
-      }
-      else{
-        setSubmitErrors([]);
-        setError("Cannot Upload, Try Again!");
-      }
-    }      
-    }
     else{
       setSubmitErrors([]);
       setError("Transaction Id cannot be Empty");

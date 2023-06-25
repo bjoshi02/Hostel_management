@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import StudentLogin from './pages/StudentLogin';
 import AdminLogin from './pages/AdminLogin';
 import EnterOtp from './pages/EnterOtp';
+import AllocateStudentRoom from "./components/Admin/AllocateStudentRoom"
 import UploadStudentList from "./components/Admin/UploadStudentList";
 import ChooseRoom from "./pages/ChooseRoom";
 import Navbar from "./components/Navbar";
@@ -38,6 +39,7 @@ function App() {
             </Route>
           </Route> */} 
           <Route path="/room_request" element={<RoomRequest />} />
+          <Route path="/allocate_admin" element = {<AllocateStudentRoom/>}/>
           <Route path="/table" element={<RowSelection />} />
         </Routes>
       </Router>

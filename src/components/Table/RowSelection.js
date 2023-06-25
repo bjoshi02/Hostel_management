@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import { useTable, useRowSelect, useFilters, useGlobalFilter, useBlockLayout } from 'react-table'
 import { useSticky } from 'react-table-sticky'
 import Data from './Data.json'
@@ -6,23 +6,13 @@ import { COLUMNS } from './columns'
 import './table.css'
 import { Checkbox } from './Checkbox'
 import { GlobalFilter } from './GlobalFilter'
+import Modal from '@mui/material/Modal'
+import Box from '@mui/material/Box'
 
+import CheckTransaction from '../Admin/CheckTransaction'
 
-const RowSelection = ({ requests, setSelectedRows }) => {
-  const columns = useMemo(() => COLUMNS, [])
-  const data = useMemo(() => requests.map((request) => {
-    // console.log(request.floorNo);
-    return {
-      _id: request._id,
-      id: request.email ? request.email.slice(0,11) : "",
-      name: request.name,
-      room_allocated: (request.roomNo ? request.roomNo.toString() + "," : "")  + (request.floorNo !== undefined ? request.floorNo.toString() + "," : "")  + request.block + "," + request.hostelName,
-      status: request.tempLocked === true ? "Temp Locked" : "Not Locked",
-      fileURL : request.fileURL,
-      details: "View"
-    }
-  }), [requests]);
-  
+import styles from '../../styles/roomRequestTable.module.css';
+
   // {
   //  _id:
   //  name: { type: String, required: true },
@@ -42,6 +32,30 @@ const RowSelection = ({ requests, setSelectedRows }) => {
   // }
 
   // let data = [];
+
+const RowSelection = ({ requests, setSelectedRows }) => {
+  const columns = useMemo(() => COLUMNS, [])
+  const data = useMemo(() => requests.map((request) => {
+    // console.log(request.floorNo);
+    return {
+      _id: request._id,
+      id: request.email ? request.email.slice(0,11) : "",
+      name: request.name,
+      room_allocated: (request.roomNo ? request.roomNo.toString() + "," : "")  + (request.floorNo !== undefined ? request.floorNo.toString() + "," : "")  + request.block + "," + request.hostelName,
+      status: request.tempLocked === true ? "Temp Locked" : "Not Locked",
+      fileURL : request.fileURL,
+      details: "View",
+      transactionId: request.transactionId ? request.transactionId : "",
+      remark: request.remarks ? request.remarks : "",
+    }
+  }), [requests]);
+
+  const [details, setDetails] = useState({});
+  const [openModal, setOpenModal] = React.useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
   
   const {
     getTableProps,
@@ -85,7 +99,21 @@ const RowSelection = ({ requests, setSelectedRows }) => {
 
   const handleViewDetails = async (data) => {
       console.log(data);
+      setDetails(data);
+      handleOpenModal();
   }
+
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    borderRadius: '30px',
+    boxShadow: 24,
+    maxHeight: '80vh',
+    overflowY: 'auto'
+  };
 
   return (
     <>
@@ -122,7 +150,6 @@ const RowSelection = ({ requests, setSelectedRows }) => {
           </thead>
           <tbody {...getTableBodyProps()}>
             {rows.map((row) => {
-              console.log(row);
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>
@@ -146,6 +173,14 @@ const RowSelection = ({ requests, setSelectedRows }) => {
           </tbody>
         </table>
       </div>
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+      >
+        <Box sx={modalStyle} className={styles.modalBox}>
+            <CheckTransaction details={details} handleGoBack={handleCloseModal} />
+        </Box>
+      </Modal>
       {/* <pre>
         <code>
         {JSON.stringify(
