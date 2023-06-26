@@ -25,6 +25,11 @@ export const COLUMNS = [
   //   }
   // },
   {
+    Header: 'Transaction Id',
+    Footer: 'Transaction Id',
+    accessor: 'transactionId'
+  },
+  {
     Header: 'Status',
     Footer: 'Status',
     accessor: 'status'

@@ -11,23 +11,21 @@ import InputAdornment from "@mui/material/InputAdornment";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import PasswordIcon from '@mui/icons-material/Password';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { encrypt, decrypt } from '../../crypto/crypto';
 
-import styles from "../../styles/adminLogin.module.css";
+import styles from "../../styles/enterOtp.module.css";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const AdminLogIn = () => {
+const EnterOtp = () => {
  
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
@@ -50,41 +48,47 @@ const AdminLogIn = () => {
     setOpen(false);
   };
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = (event) => {
-    //console.log(event);
-    event.preventDefault();
-    setShowPassword(!showPassword);
-  }
-  const handleMouseDownPassword = (event) => {
-    //console.log(event);
-    event.preventDefault();
-  };
-
   useEffect(function () {
     const encUser = localStorage.getItem("user");
     const user = decrypt((encUser ? encUser : ""));
     const encToken = localStorage.getItem(`${user}Token`);
     const token = decrypt(encToken ? encToken : "");
-    if (token && token.length) {
-      handleClick();
-      setError("Already Logged In. Please Logout First!!");
-      setTimeout(() => {
-        navigate(`/${user}_profile`);
-      }, 500);
+    if(user === "admin"){
+      if (token && token.length) {
+        handleClick();
+        setError("Already Logged In. Please Logout First!!");
+        setTimeout(() => {
+          navigate("/");
+        }, 500);
+      }
+      else {
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+      }
     }
-    else {
+    else{
+      setSubmitErrors([]);
+      setError("Invalid User");
+      handleClick();
+      localStorage.removeItem("user");
       localStorage.removeItem(`${user}Token`);
       localStorage.removeItem("email");
-      localStorage.removeItem("otp");  
+      localStorage.removeItem("otp");
       localStorage.removeItem("roomId");
+      setTimeout(() => {
+        navigate(`/`);
+      }, 500);
     }
   }, []);
-  
-  const onSubmit = async (data) => {    
+
+  const onSubmit = async (data) => {
+    
     const encUser = localStorage.getItem("user");
     const user = decrypt(encUser ? encUser : "");
+    const encEmail = localStorage.getItem("email");
+    const email = decrypt(encEmail ? encEmail : "");
+
     if ((!user) || (user !== "admin")) {
       localStorage.removeItem("user");
       localStorage.removeItem(`${user}Token`);
@@ -93,17 +97,17 @@ const AdminLogIn = () => {
       localStorage.removeItem("roomId");
       navigate('/');
     }
-    // //console.log(`${process.env.REACT_APP_website_link}/${user}/sendEmail`);        
+
     const response = await fetch(
-      `${process.env.REACT_APP_WEBSITE_LINK}/admin/adminOtpLogin`,
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/otpVerify`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: data.email,
-          password: data.password,
+          email: email,
+          otp: +data.otp
         }),
       }
     );
@@ -113,19 +117,15 @@ const AdminLogIn = () => {
       setSubmitErrors([]);
       setSuccess("");
       setError(resData.error);
-      if(resData.error === "Access denied"){
-        navigate("/");
-      }
       // //console.log(error)
     }
-
     else if (response.status === 200) {
       setError("");
       setSubmitErrors([]);
-      setSuccess("Successfully Verified Email Password");
-      localStorage.setItem("email", encrypt(data.email));
+      localStorage.setItem(`${user}Token`, encrypt(resData.adminToken));
+      setSuccess("OTP Verified, Successfully Logged In");
       setTimeout(() => {
-        navigate("/admin_otp");
+        navigate("/admin_profile");
       }, 500);
     } 
     else if (response.status === 500) {
@@ -152,7 +152,7 @@ const AdminLogIn = () => {
           </Grid>
           <Grid item xs={12} md={6} className={styles.secondBox}>
             <div className={styles.secondBoxContainer}>
-              <div className={styles.secondBoxHeader}>Admin Login</div>
+              <div className={styles.secondBoxHeader}>Enter OTP</div>
               <form noValidate onSubmit={handleSubmit(onSubmit)} className={styles.secondBoxForm}>
                 <TextField
                   variant="outlined"
@@ -167,72 +167,16 @@ const AdminLogIn = () => {
                   }}
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  {...register("email", {
-                    required: "Required field",
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Invalid email address",
-                    },
+                  type="number"
+                  id="otp"
+                  label="OTP"
+                  name="otp"
+                  {...register("otp", {
+                    required: "Required field"
                   })
                   }
-                  error={!!errors?.email}
-                  helperText={errors?.email ? errors.email.message : null}
-                //   InputProps={{
-                //     startAdornment: (
-                //       <InputAdornment position="start">
-                //         <AlternateEmailIcon style={{ color: '#1C4EFE' }} />
-                //       </InputAdornment>
-                //     ),
-                //   }}
-                  className={styles.secondBoxTextField}
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  {...register("password", {
-                    required: "Required field",
-                  })
-                  }
-                  error={!!errors?.password}
-                  helperText={errors?.password ? errors.password.message : null}
-                  sx={{
-                    ".css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-                        borderWidth: '0px',
-                    },
-                    ".css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        borderWidth: '0px',
-                    },
-                  }}
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  InputProps={{ // <-- This is where the toggle button is added.
-                    // startAdornment: (
-                    //   <InputAdornment position="start">
-                    //     <PasswordIcon style={{ color: '#FEB60A' }} />
-                    //   </InputAdornment>
-                    // ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                          style={{ color: '#FEB60A' }}
-                        >
-                          {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
+                  error={!!errors?.otp}
+                  helperText={errors?.otp ? errors.otp.message : null}
                   className={styles.secondBoxTextField}
                 />
                 <Button variant="contained" type="submit" className={styles.secondBoxButton}>Proceed</Button>
@@ -285,4 +229,4 @@ const AdminLogIn = () => {
   )
 }
 
-export default AdminLogIn;
+export default EnterOtp;

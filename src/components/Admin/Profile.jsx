@@ -224,11 +224,14 @@ const Profile = () => {
       localStorage.removeItem("email");
       localStorage.removeItem("otp");
       localStorage.removeItem("roomId");
+      setTimeout(() => {
+        handleClick();
+      }, 100);
       navigate("/");
     }
-    setTimeout(() => {
-      handleClick();
-    }, 100);
+    else{
+      navigate('/allocate_admin');
+    }    
 
   };
 
@@ -245,7 +248,25 @@ const Profile = () => {
   const handleCheckRequest = () => {
     // const encryptedData = encrypt("admin");
     // localStorage.setItem("login_user", encryptedData);
-    navigate('/room_request');
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
+
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      setTimeout(() => {
+        handleClick();
+      }, 100);
+      navigate("/");
+    }
+    else{
+      navigate('/room_request');
+    }    
   };
 
   const handleStudentList = async () => {

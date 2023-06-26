@@ -44,8 +44,8 @@ const RowSelection = ({ requests, setSelectedRows }) => {
       room_allocated: (request.roomNo ? request.roomNo.toString() + "," : "")  + (request.floorNo !== undefined ? request.floorNo.toString() + "," : "")  + request.block + "," + request.hostelName,
       status: request.tempLocked === true ? "Temp Locked" : "Not Locked",
       fileURL : request.fileURL,
-      details: "View",
       transactionId: request.transactionId ? request.transactionId : "",
+      details: "View",
       remark: request.remarks ? request.remarks : "",
     }
   }), [requests]);
@@ -154,7 +154,7 @@ const RowSelection = ({ requests, setSelectedRows }) => {
               return (
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell, idx) => {
-                    if(idx === 5){
+                    if(idx === 6){
                       return (
                         <td {...cell.getCellProps()} onClick={() => handleViewDetails(row.original)}>{cell.render("Cell")}</td>
                       );

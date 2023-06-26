@@ -30,11 +30,11 @@ table tbody{
   text-align: center;
 }
 
-table td + td + td + td + td {
+table td + td + td + td + td + td {
   color: green;
 }
 
-table td + td + td + td + td + td {
+table td + td + td + td + td + td + td {
   /* color: black; */
   text-decoration: underline;
   color: blue;

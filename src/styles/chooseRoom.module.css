@@ -14,6 +14,12 @@
     padding: 1rem 1.5rem;
 }
 
+.title{
+    width: 100%;
+    text-align: left;
+    font-size: 1.5rem
+}
+
 .formWrapper{
     width: 100%;
     display: flex;
@@ -62,6 +68,9 @@
     .container{
         padding-top: 9rem;
     }  
+    .title{
+        font-size: 2rem
+    }
     .formDivFirst{
         font-size: 1.5rem;
     }
@@ -106,6 +115,9 @@
 @media (min-width: 1150px) { 
     .container{
         padding-top: 10rem;
+    }
+    .title{
+        font-size: 2.5rem
     }
     .formDivFirst{
         font-size: 2rem;

@@ -6,7 +6,25 @@ import styles from "../../styles/checkTransaction.module.css";
 
 const CheckTransaction = ({ details, handleGoBack }) => {
 
-   
+   const handleViewDetails = () => {
+    // const blob = await details.fileURL.blob();
+    const url = details.fileURL;
+    console.log("Url", url);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute(
+        'target', '_blank'
+    );
+
+      // Append to html link element page
+    document.body.appendChild(link);
+
+    // Start download
+    link.click();
+
+    // Clean up and remove the link
+    link.parentNode.removeChild(link);
+   }
     
   return (
     <div className={styles.container}>
@@ -19,7 +37,7 @@ const CheckTransaction = ({ details, handleGoBack }) => {
             </div>
         </div>
         <div className={styles.upload}>
-            <a alt="File_Preview" target="_blank" href={details.fileURL}>View Details</a>
+            <a target="_blank" href={details.fileURL}>View Uploaded File</a>
         </div>
         <div className={styles.footer}>
             <div className={styles.footerFirst}>Tx ID</div>

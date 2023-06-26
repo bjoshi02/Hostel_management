@@ -26,6 +26,8 @@ const ChooseRoom = () => {
   const [submitErrors, setSubmitErrors] = useState([]);
   const [success, setSuccess] = useState("");
 
+  const [visible, setVisible] = useState(false);
+
   const handleClick = () => {
     setOpen(true);
   };
@@ -42,380 +44,422 @@ const ChooseRoom = () => {
   const [floors, setFloors] = useState([]);
   const [rooms, setRooms] = useState([]);
 
-    const [studentId, setStudentId] = useState("");
+  const [studentId, setStudentId] = useState("");
   const [hostel, setHostel] = useState("");
   const [block, setBlock] = useState("");
   const [floor, setFloor] = useState("");
   const [room, setRoom] = useState("");
 
-//   useEffect(function () {
-//     const encUser = localStorage.getItem("user");
-//     const user = decrypt(encUser ? encUser : "");
-//     const encToken = localStorage.getItem(`${user}Token`);
-//     const token = decrypt(encToken ? encToken : "");
-//     if (user === "student") {
-//       if (token && token.length) {
-//       } else {
-//         setSubmitErrors([]);
-//         setError("Invalid Token");
-//         handleClick();
-//         localStorage.removeItem("user");
-//         localStorage.removeItem(`${user}Token`);
-//         localStorage.removeItem("email");
-//         localStorage.removeItem("otp");
-//         localStorage.removeItem("roomId");
-//         setTimeout(() => {
-//           navigate(`/`);
-//         }, 500);
-//       }
-//     } else {
-//       setSubmitErrors([]);
-//       setError("Invalid User");
-//       handleClick();
-//       localStorage.removeItem("user");
-//       localStorage.removeItem(`${user}Token`);
-//       localStorage.removeItem("email");
-//       localStorage.removeItem("otp");
-//       localStorage.removeItem("roomId");
-//       setTimeout(() => {
-//         navigate(`/`);
-//       }, 500);
-//     }
-//   }, []);
+  useEffect(function () {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
+    if (user === "admin") {
+      if (token && token.length) {
+      } else {
+        setSubmitErrors([]);
+        setError("Invalid Token");
+        handleClick();
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 500);
+      }
+    } else {
+      setSubmitErrors([]);
+      setError("Invalid User");
+      handleClick();
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      setTimeout(() => {
+        navigate(`/`);
+      }, 500);
+    }
+  }, []);
 
-//   let getHostelDetails = async () => {
-//     const encUser = localStorage.getItem("user");
-//     const user = decrypt(encUser ? encUser : "");
-//     const encToken = localStorage.getItem(`${user}Token`);
-//     const token = decrypt(encToken ? encToken : "");
+  let handleGetDetails = async () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
 
-//     if (!user || user !== "student" || !token || token.length === 0) {
-//       localStorage.removeItem("user");
-//       localStorage.removeItem(`${user}Token`);
-//       localStorage.removeItem("email");
-//       localStorage.removeItem("otp");
-//       localStorage.removeItem("roomId");
-//       navigate("/");
-//     }
-//     const response = await fetch(
-//       `${process.env.REACT_APP_WEBSITE_LINK}/student/chooseRoomHostel`,
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           studentToken: token,
-//         }),
-//       }
-//     );
-//     let resData = await response.json();
-//     if (response.status === 400) {
-//       // //console.log(resData.error);
-//       setSubmitErrors([]);
-//       setSuccess("");
-//       setError(resData.error);
-//       if (resData.error === "Access denied") {
-//         localStorage.removeItem("user");
-//         localStorage.removeItem(`${user}Token`);
-//         localStorage.removeItem("email");
-//         localStorage.removeItem("otp");
-//         localStorage.removeItem("roomId");
-//         setTimeout(() => {
-//           navigate(`/`);
-//         }, 1000);
-//       }
-//       // //console.log(error)
-//     } else if (response.status === 200) {
-//       resData = JSON.parse(
-//         CryptoJS.AES.decrypt(
-//           resData,
-//           process.env.REACT_APP_BACKEND_MASTER_KEY
-//         ).toString(CryptoJS.enc.Utf8)
-//       );
-//       setError("");
-//       setSubmitErrors([]);
-//       setHostels(resData);
-//       setSuccess("Successfully Got Hostel Data");
-//     } else if (response.status === 500) {
-//       setError("Internal Server Error. Please Try Again later");
-//     }
-//     setTimeout(() => {
-//       handleClick();
-//     }, 100);
-//   };
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/chooseRoomHostel`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          adminToken: token,
+          studentId: studentId,
+        }),
+      }
+    );
+    let resData = await response.json();
+    if (response.status === 400) {
+      // //console.log(resData.error);
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      if (resData.error === "Access denied") {
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 1000);
+      }
+      // //console.log(error)
+    } else if (response.status === 200) {
+      resData = JSON.parse(
+        CryptoJS.AES.decrypt(
+          resData,
+          process.env.REACT_APP_BACKEND_MASTER_KEY
+        ).toString(CryptoJS.enc.Utf8)
+      );
+      setError("");
+      setSubmitErrors([]);
+      setVisible(true);
+      setHostels(resData);
+      setSuccess("Successfully Got Hostel Data");
+    } else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+  };
 
-//   useEffect(() => {
-//     getHostelDetails();
-//   }, []);
+  let getBlockDetails = async () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
 
-//   let getBlockDetails = async () => {
-//     const encUser = localStorage.getItem("user");
-//     const user = decrypt(encUser ? encUser : "");
-//     const encToken = localStorage.getItem(`${user}Token`);
-//     const token = decrypt(encToken ? encToken : "");
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/chooseRoomBlock`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          adminToken: token,
+          hostelId: hostel,
+        }),
+      }
+    );
+    let resData = await response.json();
+    if (response.status === 400) {
+      // //console.log(resData.error);
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      if (resData.error === "Access denied") {
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 1000);
+      }
+      // //console.log(error)
+    } else if (response.status === 200) {
+      resData = JSON.parse(
+        CryptoJS.AES.decrypt(
+          resData,
+          process.env.REACT_APP_BACKEND_MASTER_KEY
+        ).toString(CryptoJS.enc.Utf8)
+      );
 
-//     if (!user || user !== "student" || !token || token.length === 0) {
-//       localStorage.removeItem("user");
-//       localStorage.removeItem(`${user}Token`);
-//       localStorage.removeItem("email");
-//       localStorage.removeItem("otp");
-//       localStorage.removeItem("roomId");
-//       navigate("/");
-//     }
-//     const response = await fetch(
-//       `${process.env.REACT_APP_WEBSITE_LINK}/student/chooseRoomBlock`,
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           studentToken: token,
-//           hostelId: hostel,
-//         }),
-//       }
-//     );
-//     let resData = await response.json();
-//     if (response.status === 400) {
-//       // //console.log(resData.error);
-//       setSubmitErrors([]);
-//       setSuccess("");
-//       setError(resData.error);
-//       if (resData.error === "Access denied") {
-//         localStorage.removeItem("user");
-//         localStorage.removeItem(`${user}Token`);
-//         localStorage.removeItem("email");
-//         localStorage.removeItem("otp");
-//         localStorage.removeItem("roomId");
-//         setTimeout(() => {
-//           navigate(`/`);
-//         }, 1000);
-//       }
-//       // //console.log(error)
-//     } else if (response.status === 200) {
-//       resData = JSON.parse(
-//         CryptoJS.AES.decrypt(
-//           resData,
-//           process.env.REACT_APP_BACKEND_MASTER_KEY
-//         ).toString(CryptoJS.enc.Utf8)
-//       );
+      setError("");
+      setSubmitErrors([]);
+      setBlocks(resData);
+      setSuccess("Successfully Got Block Data");
+    } else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+  };
 
-//       setError("");
-//       setSubmitErrors([]);
-//       setBlocks(resData);
-//       setSuccess("Successfully Got Block Data");
-//     } else if (response.status === 500) {
-//       setError("Internal Server Error. Please Try Again later");
-//     }
-//     setTimeout(() => {
-//       handleClick();
-//     }, 100);
-//   };
+  //   // /chooseRoomHostel
+  //   // -> student token bhejna hai aur hit kdardena
 
-//   // /chooseRoomHostel
-//   // -> student token bhejna hai aur hit kdardena
+  useEffect(() => {
+    if (hostel.length !== 0) {
+      getBlockDetails();
+    }
+  }, [hostel]);
 
-//   useEffect(() => {
-//     if (hostel.length !== 0) {
-//       getBlockDetails();
-//     }
-//   }, [hostel]);
+  //   // /chooseRoomBlock
+  //   // send the studentToken and hostelId to backend
+  let getFloorDetails = async () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
 
-//   // /chooseRoomBlock
-//   // send the studentToken and hostelId to backend
-//   let getFloorDetails = async () => {
-//     const encUser = localStorage.getItem("user");
-//     const user = decrypt(encUser ? encUser : "");
-//     const encToken = localStorage.getItem(`${user}Token`);
-//     const token = decrypt(encToken ? encToken : "");
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/chooseRoomFloor`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          adminToken: token,
+          blockId: block,
+        }),
+      }
+    );
+    let resData = await response.json();
+    if (response.status === 400) {
+      // //console.log(resData.error);
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      if (resData.error === "Access denied") {
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 1000);
+      }
+      // //console.log(error)
+    } else if (response.status === 200) {
+      resData = JSON.parse(
+        CryptoJS.AES.decrypt(
+          resData,
+          process.env.REACT_APP_BACKEND_MASTER_KEY
+        ).toString(CryptoJS.enc.Utf8)
+      );
 
-//     if (!user || user !== "student" || !token || token.length === 0) {
-//       localStorage.removeItem("user");
-//       localStorage.removeItem(`${user}Token`);
-//       localStorage.removeItem("email");
-//       localStorage.removeItem("otp");
-//       localStorage.removeItem("roomId");
-//       navigate("/");
-//     }
-//     const response = await fetch(
-//       `${process.env.REACT_APP_WEBSITE_LINK}/student/chooseRoomFloor`,
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           studentToken: token,
-//           blockId: block,
-//         }),
-//       }
-//     );
-//     let resData = await response.json();
-//     if (response.status === 400) {
-//       // //console.log(resData.error);
-//       setSubmitErrors([]);
-//       setSuccess("");
-//       setError(resData.error);
-//       if (resData.error === "Access denied") {
-//         localStorage.removeItem("user");
-//         localStorage.removeItem(`${user}Token`);
-//         localStorage.removeItem("email");
-//         localStorage.removeItem("otp");
-//         localStorage.removeItem("roomId");
-//         setTimeout(() => {
-//           navigate(`/`);
-//         }, 1000);
-//       }
-//       // //console.log(error)
-//     } else if (response.status === 200) {
-//       resData = JSON.parse(
-//         CryptoJS.AES.decrypt(
-//           resData,
-//           process.env.REACT_APP_BACKEND_MASTER_KEY
-//         ).toString(CryptoJS.enc.Utf8)
-//       );
+      setError("");
+      setSubmitErrors([]);
+      setFloors(resData);
+      setSuccess("Successfully Got Floors Data");
+    } else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+  };
+  // /chooseRoomFloor
+  // send the studentToken and blockId
+  useEffect(() => {
+    if (block.length !== 0) {
+      getFloorDetails();
+    }
+  }, [block]);
+  //   // /chooseRoom
+  //   // send the studentToken and floorid
+  let getRoomDetails = async () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
 
-//       setError("");
-//       setSubmitErrors([]);
-//       setFloors(resData);
-//       setSuccess("Successfully Got Floors Data");
-//     } else if (response.status === 500) {
-//       setError("Internal Server Error. Please Try Again later");
-//     }
-//     setTimeout(() => {
-//       handleClick();
-//     }, 100);
-//   };
-//   // /chooseRoomFloor
-//   // send the studentToken and blockId
-//   useEffect(() => {
-//     if (block.length !== 0) {
-//       getFloorDetails();
-//     }
-//   }, [block]);
-//   // /chooseRoom
-//   // send the studentToken and floorid
-//   let getRoomDetails = async () => {
-//     const encUser = localStorage.getItem("user");
-//     const user = decrypt(encUser ? encUser : "");
-//     const encToken = localStorage.getItem(`${user}Token`);
-//     const token = decrypt(encToken ? encToken : "");
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    const response = await fetch(
+      `${process.env.REACT_APP_WEBSITE_LINK}/admin/chooseRoom`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          adminToken: token,
+          floorId: floor,
+        }),
+      }
+    );
+    let resData = await response.json();
+    if (response.status === 400) {
+      // //console.log(resData.error);
+      setSubmitErrors([]);
+      setSuccess("");
+      setError(resData.error);
+      if (resData.error === "Access denied") {
+        localStorage.removeItem("user");
+        localStorage.removeItem(`${user}Token`);
+        localStorage.removeItem("email");
+        localStorage.removeItem("otp");
+        localStorage.removeItem("roomId");
+        setTimeout(() => {
+          navigate(`/`);
+        }, 1000);
+      }
+      // //console.log(error)
+    } else if (response.status === 200) {
+      resData = JSON.parse(
+        CryptoJS.AES.decrypt(
+          resData,
+          process.env.REACT_APP_BACKEND_MASTER_KEY
+        ).toString(CryptoJS.enc.Utf8)
+      );
 
-//     if (!user || user !== "student" || !token || token.length === 0) {
-//       localStorage.removeItem("user");
-//       localStorage.removeItem(`${user}Token`);
-//       localStorage.removeItem("email");
-//       localStorage.removeItem("otp");
-//       localStorage.removeItem("roomId");
-//       navigate("/");
-//     }
-//     const response = await fetch(
-//       `${process.env.REACT_APP_WEBSITE_LINK}/student/chooseRoom`,
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           studentToken: token,
-//           floorId: floor,
-//         }),
-//       }
-//     );
-//     let resData = await response.json();
-//     if (response.status === 400) {
-//       // //console.log(resData.error);
-//       setSubmitErrors([]);
-//       setSuccess("");
-//       setError(resData.error);
-//       if (resData.error === "Access denied") {
-//         localStorage.removeItem("user");
-//         localStorage.removeItem(`${user}Token`);
-//         localStorage.removeItem("email");
-//         localStorage.removeItem("otp");
-//         localStorage.removeItem("roomId");
-//         setTimeout(() => {
-//           navigate(`/`);
-//         }, 1000);
-//       }
-//       // //console.log(error)
-//     } else if (response.status === 200) {
-//       resData = JSON.parse(
-//         CryptoJS.AES.decrypt(
-//           resData,
-//           process.env.REACT_APP_BACKEND_MASTER_KEY
-//         ).toString(CryptoJS.enc.Utf8)
-//       );
+      setError("");
+      setSubmitErrors([]);
+      setRooms(resData);
+      setSuccess("Successfully Got Rooms Data");
+    } else if (response.status === 500) {
+      setError("Internal Server Error. Please Try Again later");
+    }
+    setTimeout(() => {
+      handleClick();
+    }, 100);
+  };
 
-//       setError("");
-//       setSubmitErrors([]);
-//       setRooms(resData);
-//       setSuccess("Successfully Got Rooms Data");
-//     } else if (response.status === 500) {
-//       setError("Internal Server Error. Please Try Again later");
-//     }
-//     setTimeout(() => {
-//       handleClick();
-//     }, 100);
-//   };
+  useEffect(() => {
+    if (floor.length !== 0) {
+      getRoomDetails();
+    }
+  }, [floor]);
 
-//   useEffect(() => {
-//     if (floor.length !== 0) {
-//       getRoomDetails();
-//     }
-//   }, [floor]);
+  const handleHostelChange = (event) => {
+    setRooms([]);
+    setFloors([]);
+    setBlocks([]);
+    setHostel(event.target.value);
+  };
+  const handleBlockChange = (event) => {
+    setRooms([]);
+    setFloors([]);
+    setBlock(event.target.value);
+  };
+  const handleFloorChange = (event) => {
+    setRooms([]);
+    setFloor(event.target.value);
+  };
+  const handleRoomChange = (event) => {
+    setRoom(event.target.value);
+  };
+  // transactionSubmit
 
-//   const handleHostelChange = (event) => {
-//     setRooms([]);
-//     setFloors([]);
-//     setBlocks([]);
-//     setHostel(event.target.value);
-//   };
-//   const handleBlockChange = (event) => {
-//     setRooms([]);
-//     setFloors([]);
-//     setBlock(event.target.value);
-//   };
-//   const handleFloorChange = (event) => {
-//     setRooms([]);
-//     setFloor(event.target.value);
-//   };
-//   const handleRoomChange = (event) => {
-//     setRoom(event.target.value);
-//   };
-//   // transactionSubmit
+  const handleProceed = async () => {
+    const encUser = localStorage.getItem("user");
+    const user = decrypt(encUser ? encUser : "");
+    const encToken = localStorage.getItem(`${user}Token`);
+    const token = decrypt(encToken ? encToken : "");
 
-//   const handleProceed = async () => {
-//     const encUser = localStorage.getItem("user");
-//     const user = decrypt(encUser ? encUser : "");
-//     const encToken = localStorage.getItem(`${user}Token`);
-//     const token = decrypt(encToken ? encToken : "");
+    if (!user || user !== "admin" || !token || token.length === 0) {
+      localStorage.removeItem("user");
+      localStorage.removeItem(`${user}Token`);
+      localStorage.removeItem("email");
+      localStorage.removeItem("otp");
+      localStorage.removeItem("roomId");
+      navigate("/");
+    }
+    if (room.length > 0) {
+      console.log(room);
+      localStorage.setItem("roomId", encrypt(room));
 
-//     if (!user || user !== "student" || !token || token.length === 0) {
-//       localStorage.removeItem("user");
-//       localStorage.removeItem(`${user}Token`);
-//       localStorage.removeItem("email");
-//       localStorage.removeItem("otp");
-//       localStorage.removeItem("roomId");
-//       navigate("/");
-//     }
-//     if (room.length > 0) {
-//       console.log(room);
-//       localStorage.setItem("roomId", encrypt(room));
-//       setTimeout(() => {
-//         navigate("/upload_transaction");
-//       }, 100);
-//     } else {
-//       setSubmitErrors([]);
-//       setError("Please Select a Room First");
-//       handleClick();
-//     }
-//   };
+      const response = await fetch(
+        `${process.env.REACT_APP_WEBSITE_LINK}/admin/selfAddStudent`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            adminToken: token,
+            studentMailId: studentId,
+            roomId: room,
+            transactionId: "0987654321",
+          }),
+        }
+      );
+      let resData = await response.json();
+      if (response.status === 400) {
+        // //console.log(resData.error);
+        setSubmitErrors([]);
+        setSuccess(""); 
+        setError(resData.error);
+        if (resData.error === "Access denied") {
+          localStorage.removeItem("user");
+          localStorage.removeItem(`${user}Token`);
+          localStorage.removeItem("email");
+          localStorage.removeItem("otp");
+          localStorage.removeItem("roomId");
+          setTimeout(() => {
+            navigate(`/`);
+          }, 1000);
+        }
+        // //console.log(error)
+      } else if (response.status === 200) {
+        setError("");
+        setSubmitErrors([]);
+        setSuccess("Successfully Allocated Room");
+         setTimeout(() => {
+           navigate(`/room_request`);
+         }, 1000);
+      } else if (response.status === 500) {
+        setError("Internal Server Error. Please Try Again later");
+      }
+      setTimeout(() => {
+        handleClick();
+      }, 100);
+    } else {
+      setSubmitErrors([]);
+      setError("Please Select a Room First");
+      handleClick();
+    }
+  };
 
   return (
     <div className={styles.container}>
       <Paper className={styles.wrapper}>
+        <h1 className={styles.title}>Allocate Room to Student </h1>
         <div className={styles.formWrapper}>
           <div className={styles.formDiv}>
             <span className={styles.formDivFirst}>Student ID</span>
@@ -439,126 +483,134 @@ const ChooseRoom = () => {
           <div className={styles.buttonWrapper}>
             <Button
               variant="contained"
-              // onClick={() => handleProceed()}
+              onClick={() => handleGetDetails()}
               className={styles.proceedButton}
             >
               Get Details
             </Button>
           </div>
-          <div className={styles.formDiv}>
-            <span className={styles.formDivFirst}>Hostel</span>
-            <span className={styles.formDivSecond}>
-              <FormControl
-                sx={{ m: 1, width: "100%" }}
-                style={{ margin: "0px" }}
-              >
-                <InputLabel id="hostel-label">Hostel</InputLabel>
-                <Select
-                  labelId="hostel-label"
-                  value={hostel}
-                  label="Hostel"
-                  //   onChange={handleHostelChange}
+          {visible ? (
+            <div style={{ width: "100%" }}>
+              <div className={styles.formDiv}>
+                <span className={styles.formDivFirst}>Hostel</span>
+                <span className={styles.formDivSecond}>
+                  <FormControl
+                    sx={{ m: 1, width: "100%" }}
+                    style={{ margin: "0px" }}
+                  >
+                    <InputLabel id="hostel-label">Hostel</InputLabel>
+                    <Select
+                      labelId="hostel-label"
+                      value={hostel}
+                      label="Hostel"
+                      onChange={handleHostelChange}
+                    >
+                      {
+                        // hostelNo: { type: Number, required: true },
+                        // hostelName: { type: String },
+                        // branch: { type: String, required: true },
+                        // year: { type: Number, required: true },
+                        hostels.map((hostel) => {
+                          return (
+                            <MenuItem value={hostel._id}>
+                              {hostel.hostelName}
+                            </MenuItem>
+                          );
+                        })
+                      }
+                    </Select>
+                  </FormControl>
+                </span>
+              </div>
+              <div className={styles.formDiv}>
+                <span className={styles.formDivFirst}>Block No.</span>
+                <span className={styles.formDivSecond}>
+                  <FormControl
+                    sx={{ m: 1, width: "100%" }}
+                    style={{ margin: "0px" }}
+                  >
+                    <InputLabel id="block-label">Block</InputLabel>
+                    <Select
+                      labelId="block-label"
+                      value={block}
+                      label="Block"
+                      onChange={handleBlockChange}
+                    >
+                      {blocks.map((block) => {
+                        return (
+                          <MenuItem value={block._id}>{block.block}</MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                </span>
+              </div>
+              <div className={styles.formDiv}>
+                <span className={styles.formDivFirst}>Floor No.</span>
+                <span className={styles.formDivSecond}>
+                  <FormControl
+                    sx={{ m: 1, width: "100%" }}
+                    style={{ margin: "0px" }}
+                  >
+                    <InputLabel id="floor-label">Floor</InputLabel>
+                    <Select
+                      labelId="floor-label"
+                      value={floor}
+                      label="Floor"
+                      onChange={handleFloorChange}
+                    >
+                      {floors.map((floor) => {
+                        return (
+                          <MenuItem value={floor._id}>{floor.floorNo}</MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                </span>
+              </div>
+              <div className={styles.formDiv}>
+                <span className={styles.formDivFirst}>Room No.</span>
+                <span className={styles.formDivSecond}>
+                  <FormControl
+                    sx={{ m: 1, width: "100%" }}
+                    style={{ margin: "0px" }}
+                  >
+                    <InputLabel id="room-label">Room</InputLabel>
+                    <Select
+                      labelId="room-label"
+                      value={room + ""}
+                      label="Room"
+                      onChange={handleRoomChange}
+                    >
+                      {
+                        // bedNo : {type : Number, required : true},
+                        // roomNo: { type: Number , required : true},
+                        // floorId: { type: mongoose.Schema.Types.ObjectId, required: true },
+                        // tempLocked : {type : Boolean, default: false},
+                        // permanentLocked : {type : Boolean , default : false}
+                        rooms.map((room) => {
+                          return (
+                            <MenuItem value={room._id}>{room.roomNo}</MenuItem>
+                          );
+                        })
+                      }
+                    </Select>
+                  </FormControl>
+                </span>
+              </div>
+              <div className={styles.buttonWrapper}>
+                <Button
+                  variant="contained"
+                  onClick={() => handleProceed()}
+                  className={styles.proceedButton}
                 >
-                  {
-                    // hostelNo: { type: Number, required: true },
-                    // hostelName: { type: String },
-                    // branch: { type: String, required: true },
-                    // year: { type: Number, required: true },
-                    hostels.map((hostel) => {
-                      return (
-                        <MenuItem value={hostel._id}>
-                          {hostel.hostelName}
-                        </MenuItem>
-                      );
-                    })
-                  }
-                </Select>
-              </FormControl>
-            </span>
-          </div>
-          <div className={styles.formDiv}>
-            <span className={styles.formDivFirst}>Block No.</span>
-            <span className={styles.formDivSecond}>
-              <FormControl
-                sx={{ m: 1, width: "100%" }}
-                style={{ margin: "0px" }}
-              >
-                <InputLabel id="block-label">Block</InputLabel>
-                <Select
-                  labelId="block-label"
-                  value={block}
-                  label="Block"
-                  //   onChange={handleBlockChange}
-                >
-                  {blocks.map((block) => {
-                    return <MenuItem value={block._id}>{block.block}</MenuItem>;
-                  })}
-                </Select>
-              </FormControl>
-            </span>
-          </div>
-          <div className={styles.formDiv}>
-            <span className={styles.formDivFirst}>Floor No.</span>
-            <span className={styles.formDivSecond}>
-              <FormControl
-                sx={{ m: 1, width: "100%" }}
-                style={{ margin: "0px" }}
-              >
-                <InputLabel id="floor-label">Floor</InputLabel>
-                <Select
-                  labelId="floor-label"
-                  value={floor}
-                  label="Floor"
-                  //   onChange={handleFloorChange}
-                >
-                  {floors.map((floor) => {
-                    return (
-                      <MenuItem value={floor._id}>{floor.floorNo}</MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </span>
-          </div>
-          <div className={styles.formDiv}>
-            <span className={styles.formDivFirst}>Room No.</span>
-            <span className={styles.formDivSecond}>
-              <FormControl
-                sx={{ m: 1, width: "100%" }}
-                style={{ margin: "0px" }}
-              >
-                <InputLabel id="room-label">Room</InputLabel>
-                <Select
-                  labelId="room-label"
-                  value={room + ""}
-                  label="Room"
-                  //   onChange={handleRoomChange}
-                >
-                  {
-                    // bedNo : {type : Number, required : true},
-                    // roomNo: { type: Number , required : true},
-                    // floorId: { type: mongoose.Schema.Types.ObjectId, required: true },
-                    // tempLocked : {type : Boolean, default: false},
-                    // permanentLocked : {type : Boolean , default : false}
-                    rooms.map((room) => {
-                      return (
-                        <MenuItem value={room._id}>{room.roomNo}</MenuItem>
-                      );
-                    })
-                  }
-                </Select>
-              </FormControl>
-            </span>
-          </div>
-        </div>
-        <div className={styles.buttonWrapper}>
-          <Button
-            variant="contained"
-            // onClick={() => handleProceed()}
-            className={styles.proceedButton}
-          >
-            Proceed
-          </Button>
+                  Proceed
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </Paper>
       {open && submitErrors.length !== 0 ? (
