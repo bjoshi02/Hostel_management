@@ -43,6 +43,7 @@ function App() {
           <Route path="/room_request" element={<RoomRequest />} />
           <Route path="/allocate_admin" element = {<AllocateStudentRoom/>}/>
           {/* <Route path="/table" element={<RowSelection />} /> */}
+          <Route path="*" element={<h1>Error 404! The requested page does not exist</h1>} />
         </Routes>
       </Router>
     </>
